@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Life Satisfaction by Commute Mode</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link href="../../css/bootstrap.min.css" rel="stylesheet" />
+        <link href="../../css/fancybox/jquery.fancybox.css" rel="stylesheet">
+        <link href="../../css/style.css" rel="stylesheet" />
+        <link href="../../skins/default.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.1.min.css" type="text/css" />
+<link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.1.min.css" type="text/css" />
+
+<script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.1.min.js"></script>
+<script type="text/javascript">
+    Bokeh.set_log_level("info");
+</script>
+        <style>
+          html {
+            width: 100%;
+            height: 100%;
+          }
+          body {
+            width: 75%;
+            height: 100%;
+            margin: auto;
+          }
+        </style>
+    </head>
+    <body>
+      <header>
+            <div class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="index.html"><span>El Paso </span>Multimodal</a>
+                    </div>
+                    <div class="navbar-collapse collapse ">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="../../index.html">Home</a></li>
+                            <li><a href="../../maps.html">Maps</a></li>
+                            <li><a href="../../plots.html">Plots</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+      </header>
+
+        <div class="bk-root">
+            <div class="plotdiv" id="9eb18078-9fa9-4198-b0d3-21dba8fda5fb"></div>
+        </div>
+
+        <script type="text/javascript">
+            Bokeh.$(function() {
+            var docs_json = {"698435fd-d705-4eda-8dfb-bb3de04bd2fe":{"roots":{"references":[{"attributes":{"dimension":1,"plot":{"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"},"ticker":{"id":"88ea11d0-c83b-49f1-959d-82186e132440","type":"BasicTicker"}},"id":"5f8c893a-34bf-40dc-981e-6d87895f01d9","type":"Grid"},{"attributes":{"active_drag":"auto","active_scroll":"auto","active_tap":"auto","tools":[{"id":"de5c40f1-7c61-4116-adb7-1df1a344ec11","type":"PanTool"},{"id":"4567ba08-66a7-4c1a-995a-235207a61451","type":"WheelZoomTool"},{"id":"7942de8c-657f-4184-b318-a47fdd20272b","type":"BoxZoomTool"},{"id":"416711c7-859e-40d8-9f5c-1a2379cbc4c0","type":"ResetTool"},{"id":"25863a12-2b06-4b62-b347-daaf8562f3cb","type":"HoverTool"}]},"id":"83922c2b-d121-4b46-9d2c-a54de1c658d6","type":"Toolbar"},{"attributes":{"callback":{"id":"860fe680-876a-4f35-9f5e-26d132d8c271","type":"CustomJS"},"options":["SOV","Carpool","Transit","Bike","Walk"],"title":"Mode:","value":"SOV"},"id":"8d1699d8-f8d2-4fd2-95ae-ad89f3229480","type":"Select"},{"attributes":{"children":[{"id":"d762ff59-98bb-4915-bbf0-676fb12ae35a","type":"WidgetBox"},{"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"}]},"id":"ccebf7aa-1169-4da3-89a0-8c9d9ecbb3e4","type":"Column"},{"attributes":{"plot":{"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"}},"id":"416711c7-859e-40d8-9f5c-1a2379cbc4c0","type":"ResetTool"},{"attributes":{"callback":null,"factors":["Never","Once a Week","2-3 Days a Week","4-5 Days a Week","Every Day"]},"id":"ac93c5ef-a54d-4e0c-922a-a6442058da99","type":"FactorRange"},{"attributes":{"plot":{"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"}},"id":"de5c40f1-7c61-4116-adb7-1df1a344ec11","type":"PanTool"},{"attributes":{},"id":"dfe7d9e6-a007-41de-b87f-7a50f464dd1c","type":"CategoricalTicker"},{"attributes":{"callback":null,"end":5},"id":"b9d42977-5fc5-4b1c-b8ec-15224a0826e3","type":"Range1d"},{"attributes":{"callback":null,"column_names":["height_zeros","y_full","y_zeros","height_full","height","x","y"],"data":{"height":[0.0,0.0,0.0,0.0,0.0],"height_full":[4.280701754385965,4.090909090909091,4.235294117647059,4.428571428571429,4.083333333333333],"height_zeros":[0.0,0.0,0.0,0.0,0.0],"x":["Never","Once a Week","2-3 Days a Week","4-5 Days a Week","Every Day"],"y":[2.1403508771929824,2.0454545454545454,2.1176470588235294,2.2142857142857144,2.0416666666666665],"y_full":[2.1403508771929824,2.0454545454545454,2.1176470588235294,2.2142857142857144,2.0416666666666665],"y_zeros":[2.1403508771929824,2.0454545454545454,2.1176470588235294,2.2142857142857144,2.0416666666666665]}},"id":"15b196c2-40d7-41f1-b914-2ba597530864","type":"ColumnDataSource"},{"attributes":{"plot":{"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"},"ticker":{"id":"dfe7d9e6-a007-41de-b87f-7a50f464dd1c","type":"CategoricalTicker"}},"id":"bafd4d8f-c79a-4613-ab5b-222e5c2f0737","type":"Grid"},{"attributes":{"callback":null,"plot":{"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"},"tooltips":[["Mean Likert Value","@height{1.11}"]]},"id":"25863a12-2b06-4b62-b347-daaf8562f3cb","type":"HoverTool"},{"attributes":{"callback":null,"column_names":["height_zeros","y_full","y_zeros","height_full","height","x","y"],"data":{"height":[4.315789473684211,4.333333333333333,4.269230769230769,4.282828282828283,4.294117647058823],"height_full":[4.315789473684211,4.333333333333333,4.269230769230769,4.282828282828283,4.294117647058823],"height_zeros":[0.0,0.0,0.0,0.0,0.0],"x":["Never","Once a Week","2-3 Days a Week","4-5 Days a Week","Every Day"],"y":[2.1578947368421053,2.1666666666666665,2.1346153846153846,2.1414141414141414,2.1470588235294117],"y_full":[2.1578947368421053,2.1666666666666665,2.1346153846153846,2.1414141414141414,2.1470588235294117],"y_zeros":[2.1578947368421053,2.1666666666666665,2.1346153846153846,2.1414141414141414,2.1470588235294117]}},"id":"88dc4ef6-ecc8-4267-932e-cc53fa8bfe14","type":"ColumnDataSource"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"height":{"field":"height","units":"data"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"width":{"units":"data","value":0.7},"x":{"field":"x"},"y":{"field":"y"}},"id":"0843a542-d5d2-4b22-8a9c-b114338d3e55","type":"Rect"},{"attributes":{"callback":null,"column_names":["height_zeros","y_full","y_zeros","height_full","height","x","y"],"data":{"height":[0.0,0.0,0.0,0.0,0.0],"height_full":[4.278797996661102,4.285714285714286,4.666666666666667,4.5,3.75],"height_zeros":[0.0,0.0,0.0,0.0,0.0],"x":["Never","Once a Week","2-3 Days a Week","4-5 Days a Week","Every Day"],"y":[2.139398998330551,2.142857142857143,2.3333333333333335,2.25,1.875],"y_full":[2.139398998330551,2.142857142857143,2.3333333333333335,2.25,1.875],"y_zeros":[2.139398998330551,2.142857142857143,2.3333333333333335,2.25,1.875]}},"id":"f2a2bc6b-1971-43de-a8f0-68e49646aed5","type":"ColumnDataSource"},{"attributes":{"fill_color":{"value":"#56BB66"},"height":{"field":"height","units":"data"},"line_color":{"value":"#56BB66"},"width":{"units":"data","value":0.7},"x":{"field":"x"},"y":{"field":"y"}},"id":"a43dea60-687b-44c1-beb7-61abed36de10","type":"Rect"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"height":{"field":"height","units":"data"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"width":{"units":"data","value":0.7},"x":{"field":"x"},"y":{"field":"y"}},"id":"5f29b59a-daab-4c11-82bc-a69841a5df9d","type":"Rect"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"e082be86-5f0d-467f-88e1-06e0d683a45d","type":"BoxAnnotation"},{"attributes":{"data_source":{"id":"3e07f06e-80be-4b07-965d-37a91256b26f","type":"ColumnDataSource"},"glyph":{"id":"f33ce6e7-3883-4ddb-85c9-2f8735139af2","type":"Rect"},"hover_glyph":null,"name":"Walk","nonselection_glyph":{"id":"5f29b59a-daab-4c11-82bc-a69841a5df9d","type":"Rect"},"selection_glyph":null},"id":"69beeec5-1177-480e-a536-cc393b14ceac","type":"GlyphRenderer"},{"attributes":{"data_source":{"id":"3692fa91-bc13-4f8d-a32b-affcb4020c2e","type":"ColumnDataSource"},"glyph":{"id":"c89ea5d8-d49d-4356-8efc-6a4b95c8040e","type":"Rect"},"hover_glyph":null,"name":"Bike","nonselection_glyph":{"id":"95820c86-aea1-4854-a6c1-e941327735b3","type":"Rect"},"selection_glyph":null},"id":"e940d6d7-ab57-4afe-a2ac-fff868944597","type":"GlyphRenderer"},{"attributes":{"fill_color":{"value":"#56BB66"},"height":{"field":"height","units":"data"},"line_color":{"value":"#56BB66"},"width":{"units":"data","value":0.7},"x":{"field":"x"},"y":{"field":"y"}},"id":"1ac9ede8-62a7-4740-ac71-c4c45f8f8ecf","type":"Rect"},{"attributes":{"callback":null,"column_names":["height_zeros","y_full","y_zeros","height_full","height","x","y"],"data":{"height":[0.0,0.0,0.0,0.0,0.0],"height_full":[4.300738007380073,3.9565217391304346,4.2592592592592595,4.3076923076923075,4.0],"height_zeros":[0.0,0.0,0.0,0.0,0.0],"x":["Never","Once a Week","2-3 Days a Week","4-5 Days a Week","Every Day"],"y":[2.1503690036900367,1.9782608695652173,2.1296296296296298,2.1538461538461537,2.0],"y_full":[2.1503690036900367,1.9782608695652173,2.1296296296296298,2.1538461538461537,2.0],"y_zeros":[2.1503690036900367,1.9782608695652173,2.1296296296296298,2.1538461538461537,2.0]}},"id":"3e07f06e-80be-4b07-965d-37a91256b26f","type":"ColumnDataSource"},{"attributes":{"fill_color":{"value":"#56BB66"},"height":{"field":"height","units":"data"},"line_color":{"value":"#56BB66"},"width":{"units":"data","value":0.7},"x":{"field":"x"},"y":{"field":"y"}},"id":"c89ea5d8-d49d-4356-8efc-6a4b95c8040e","type":"Rect"},{"attributes":{"args":{"source1":{"id":"88dc4ef6-ecc8-4267-932e-cc53fa8bfe14","type":"ColumnDataSource"},"source2":{"id":"15b196c2-40d7-41f1-b914-2ba597530864","type":"ColumnDataSource"},"source3":{"id":"f2a2bc6b-1971-43de-a8f0-68e49646aed5","type":"ColumnDataSource"},"source4":{"id":"3692fa91-bc13-4f8d-a32b-affcb4020c2e","type":"ColumnDataSource"},"source5":{"id":"3e07f06e-80be-4b07-965d-37a91256b26f","type":"ColumnDataSource"}},"code":"\n        var f = cb_obj.get('value');\n        var data1 = source1.get('data');\n        var data2 = source2.get('data');\n        var data3 = source3.get('data');\n        var data4 = source4.get('data');\n        var data5 = source5.get('data');\n        if (f == 'SOV') {\n            data2['height'] = data2['height_zeros'];\n            data3['height'] = data3['height_zeros'];\n            data4['height'] = data4['height_zeros'];\n            data5['height'] = data5['height_zeros'];\n            data1['y'] = data1['y_zeros'];\n            data1['height'] = data1['height_full'];\n            source1.trigger('change');\n            source2.trigger('change');\n            source3.trigger('change');\n            source4.trigger('change');\n            source5.trigger('change');\n            }\n        if (f == 'Carpool') {\n            data1['height'] = data1['height_zeros'];\n            data3['height'] = data3['height_zeros'];\n            data4['height'] = data4['height_zeros'];\n            data5['height'] = data5['height_zeros'];         \n            data2['y'] = data2['y_zeros'];\n            data2['height'] = data2['height_full'];\n            source1.trigger('change');\n            source2.trigger('change');\n            source3.trigger('change');\n            source4.trigger('change');\n            source5.trigger('change');\n            }\n\n        if (f == 'Transit') {\n            data1['height'] = data1['height_zeros'];\n            data2['height'] = data2['height_zeros'];\n            data4['height'] = data4['height_zeros'];\n            data5['height'] = data5['height_zeros'];        \n            data3['y'] = data3['y_zeros'];\n            data3['height'] = data3['height_full'];\n            console.log('data3',data3)\n            source1.trigger('change');\n            source2.trigger('change');\n            source3.trigger('change');\n            source4.trigger('change');\n            source5.trigger('change');\n            }\n        if (f == 'Bike') {\n            data1['height'] = data1['height_zeros'];\n            data2['height'] = data2['height_zeros'];\n            data3['height'] = data3['height_zeros'];\n            data5['height'] = data5['height_zeros'];         \n            data4['y'] = data4['y_zeros'];\n            data4['height'] = data4['height_full'];\n            source1.trigger('change');\n            source2.trigger('change');\n            source3.trigger('change');\n            source4.trigger('change');\n            source5.trigger('change');\n            }\n        if (f == 'Walk') {\n            data1['height'] = data1['height_zeros'];\n            data2['height'] = data2['height_zeros'];\n            data3['height'] = data3['height_zeros'];\n            data4['height'] = data4['height_zeros'];        \n            data5['y'] = data5['y_zeros'];\n            data5['height'] = data5['height_full'];\n            source1.trigger('change');\n            source2.trigger('change');\n            source3.trigger('change');\n            source4.trigger('change');\n            source5.trigger('change');\n            }\n    "},"id":"860fe680-876a-4f35-9f5e-26d132d8c271","type":"CustomJS"},{"attributes":{"data_source":{"id":"88dc4ef6-ecc8-4267-932e-cc53fa8bfe14","type":"ColumnDataSource"},"glyph":{"id":"f9bd7340-1e4e-4a70-9303-77805bdc196c","type":"Rect"},"hover_glyph":null,"name":"SOV","nonselection_glyph":{"id":"6691554f-fa13-4f94-80f8-f28c3552f28d","type":"Rect"},"selection_glyph":null},"id":"91c81279-3a59-4d3f-bc7b-e6f295b3cdad","type":"GlyphRenderer"},{"attributes":{"data_source":{"id":"15b196c2-40d7-41f1-b914-2ba597530864","type":"ColumnDataSource"},"glyph":{"id":"a43dea60-687b-44c1-beb7-61abed36de10","type":"Rect"},"hover_glyph":null,"name":"Carpool","nonselection_glyph":{"id":"6c1a35be-3a6e-4029-a6bd-4cd1eaa0d81a","type":"Rect"},"selection_glyph":null},"id":"1c415cb4-da4f-4069-b169-edded58da748","type":"GlyphRenderer"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"height":{"field":"height","units":"data"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"width":{"units":"data","value":0.7},"x":{"field":"x"},"y":{"field":"y"}},"id":"95820c86-aea1-4854-a6c1-e941327735b3","type":"Rect"},{"attributes":{"plot":{"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"}},"id":"4567ba08-66a7-4c1a-995a-235207a61451","type":"WheelZoomTool"},{"attributes":{"children":[{"id":"8d1699d8-f8d2-4fd2-95ae-ad89f3229480","type":"Select"}]},"id":"d762ff59-98bb-4915-bbf0-676fb12ae35a","type":"WidgetBox"},{"attributes":{"fill_color":{"value":"#56BB66"},"height":{"field":"height","units":"data"},"line_color":{"value":"#56BB66"},"width":{"units":"data","value":0.7},"x":{"field":"x"},"y":{"field":"y"}},"id":"f9bd7340-1e4e-4a70-9303-77805bdc196c","type":"Rect"},{"attributes":{"axis_label":"Mean Self-Reported Life Satisfaction (1=Very Dissatisfied, 5=Very Satisfied)","formatter":{"id":"b7749d29-f582-48ef-85e3-b3aa4821198c","type":"BasicTickFormatter"},"plot":{"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"},"ticker":{"id":"88ea11d0-c83b-49f1-959d-82186e132440","type":"BasicTicker"}},"id":"3d25f2d2-f6a3-4989-b255-bd94b5278621","type":"LinearAxis"},{"attributes":{"overlay":{"id":"e082be86-5f0d-467f-88e1-06e0d683a45d","type":"BoxAnnotation"},"plot":{"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"}},"id":"7942de8c-657f-4184-b318-a47fdd20272b","type":"BoxZoomTool"},{"attributes":{"data_source":{"id":"f2a2bc6b-1971-43de-a8f0-68e49646aed5","type":"ColumnDataSource"},"glyph":{"id":"1ac9ede8-62a7-4740-ac71-c4c45f8f8ecf","type":"Rect"},"hover_glyph":null,"name":"Transit","nonselection_glyph":{"id":"0843a542-d5d2-4b22-8a9c-b114338d3e55","type":"Rect"},"selection_glyph":null},"id":"737a51fc-697c-4faa-92e1-29871e287ea4","type":"GlyphRenderer"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"height":{"field":"height","units":"data"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"width":{"units":"data","value":0.7},"x":{"field":"x"},"y":{"field":"y"}},"id":"6691554f-fa13-4f94-80f8-f28c3552f28d","type":"Rect"},{"attributes":{},"id":"bf264485-122e-44a9-b7e8-4666797f9398","type":"ToolEvents"},{"attributes":{"below":[{"id":"7693a8fd-6981-466c-8e8f-dedbb43fa952","type":"CategoricalAxis"}],"left":[{"id":"3d25f2d2-f6a3-4989-b255-bd94b5278621","type":"LinearAxis"}],"outline_line_color":{"value":null},"renderers":[{"id":"7693a8fd-6981-466c-8e8f-dedbb43fa952","type":"CategoricalAxis"},{"id":"bafd4d8f-c79a-4613-ab5b-222e5c2f0737","type":"Grid"},{"id":"3d25f2d2-f6a3-4989-b255-bd94b5278621","type":"LinearAxis"},{"id":"5f8c893a-34bf-40dc-981e-6d87895f01d9","type":"Grid"},{"id":"e082be86-5f0d-467f-88e1-06e0d683a45d","type":"BoxAnnotation"},{"id":"91c81279-3a59-4d3f-bc7b-e6f295b3cdad","type":"GlyphRenderer"},{"id":"1c415cb4-da4f-4069-b169-edded58da748","type":"GlyphRenderer"},{"id":"737a51fc-697c-4faa-92e1-29871e287ea4","type":"GlyphRenderer"},{"id":"e940d6d7-ab57-4afe-a2ac-fff868944597","type":"GlyphRenderer"},{"id":"69beeec5-1177-480e-a536-cc393b14ceac","type":"GlyphRenderer"}],"title":{"id":"bf44cc26-7bf2-4b75-a0aa-ea1fdd4fe6cf","type":"Title"},"tool_events":{"id":"bf264485-122e-44a9-b7e8-4666797f9398","type":"ToolEvents"},"toolbar":{"id":"83922c2b-d121-4b46-9d2c-a54de1c658d6","type":"Toolbar"},"x_range":{"id":"ac93c5ef-a54d-4e0c-922a-a6442058da99","type":"FactorRange"},"y_range":{"id":"b9d42977-5fc5-4b1c-b8ec-15224a0826e3","type":"Range1d"}},"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"},{"attributes":{"fill_color":{"value":"#56BB66"},"height":{"field":"height","units":"data"},"line_color":{"value":"#56BB66"},"width":{"units":"data","value":0.7},"x":{"field":"x"},"y":{"field":"y"}},"id":"f33ce6e7-3883-4ddb-85c9-2f8735139af2","type":"Rect"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"height":{"field":"height","units":"data"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"width":{"units":"data","value":0.7},"x":{"field":"x"},"y":{"field":"y"}},"id":"6c1a35be-3a6e-4029-a6bd-4cd1eaa0d81a","type":"Rect"},{"attributes":{},"id":"b7749d29-f582-48ef-85e3-b3aa4821198c","type":"BasicTickFormatter"},{"attributes":{},"id":"88ea11d0-c83b-49f1-959d-82186e132440","type":"BasicTicker"},{"attributes":{"callback":null,"column_names":["height_zeros","y_full","y_zeros","height_full","height","x","y"],"data":{"height":[0.0,0.0,0.0,0.0,0.0],"height_full":[4.285956006768189,4.142857142857143,4.1,4.333333333333333,4.333333333333333],"height_zeros":[0.0,0.0,0.0,0.0,0.0],"x":["Never","Once a Week","2-3 Days a Week","4-5 Days a Week","Every Day"],"y":[2.1429780033840946,2.0714285714285716,2.05,2.1666666666666665,2.1666666666666665],"y_full":[2.1429780033840946,2.0714285714285716,2.05,2.1666666666666665,2.1666666666666665],"y_zeros":[2.1429780033840946,2.0714285714285716,2.05,2.1666666666666665,2.1666666666666665]}},"id":"3692fa91-bc13-4f8d-a32b-affcb4020c2e","type":"ColumnDataSource"},{"attributes":{},"id":"34dce346-b698-4826-990a-ab5d4299bcf4","type":"CategoricalTickFormatter"},{"attributes":{"axis_label":"Commute Frequency","formatter":{"id":"34dce346-b698-4826-990a-ab5d4299bcf4","type":"CategoricalTickFormatter"},"plot":{"id":"0033cdc3-4304-4b08-a499-29a797f9a08f","subtype":"Figure","type":"Plot"},"ticker":{"id":"dfe7d9e6-a007-41de-b87f-7a50f464dd1c","type":"CategoricalTicker"}},"id":"7693a8fd-6981-466c-8e8f-dedbb43fa952","type":"CategoricalAxis"},{"attributes":{"plot":null,"text":"Self-Reported Life Satisfaction by Commute Mode Frequency"},"id":"bf44cc26-7bf2-4b75-a0aa-ea1fdd4fe6cf","type":"Title"}],"root_ids":["ccebf7aa-1169-4da3-89a0-8c9d9ecbb3e4"]},"title":"Bokeh Application","version":"0.12.1"}};
+            var render_items = [{"docid":"698435fd-d705-4eda-8dfb-bb3de04bd2fe","elementid":"9eb18078-9fa9-4198-b0d3-21dba8fda5fb","modelid":"ccebf7aa-1169-4da3-89a0-8c9d9ecbb3e4"}];
+
+            Bokeh.embed.embed_items(docs_json, render_items);
+        });
+        </script>
+        <footer>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="widget">
+                <h5 class="widgetheading">Get in touch with us</h5>
+                  <address>
+                   El Paso MPO<br>
+                   211 N Florence St<br>
+                   El Paso, TX 79901<br>
+                   915-212-7107</address>
+                  <span>&copy; 2016</span>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="widget">
+                <h5 class="widgetheading"></h5>
+                <address>
+                 Ipek Sener, PhD<br>
+                 Assistant Research Scientist<br>
+                 Texas A&M Transportation Institute<br>
+                 505 E Huntland Dr, Suite 455<br>
+                 Austin, TX 78752<br>
+                 Tel 512.407.1119 | Fax 512.467.8971<br>
+                 i-sener@tti.tamu.edu</address>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="widget">
+                <h5 class="widgetheading"></h5>
+                <ul class="link-list">
+                  <li><a href="#"></a></li>
+                  <li><a href="#"></a></li>
+                  <li><a href="#"></a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="widget">
+                <h5 class="widgetheading">Pages</h5>
+                <ul class="link-list">
+                  <li><a href="../../index.html">Home</a></li>
+                  <li><a href="../../maps.html">Maps</a></li>
+                  <li><a href="../../plots.html">Plots</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </footer>
+    </body>
+</html>

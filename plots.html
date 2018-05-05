@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>El Paso Multimodal Survey: Plots</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link href="css/bootstrap.min.css" rel="stylesheet" />
+        <link href="css/fancybox/jquery.fancybox.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet" />
+        <link href="skins/default.css" rel="stylesheet" />
+
+
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.1.min.css" type="text/css" />
+        <link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.1.min.css" type="text/css" />
+        <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.1.min.js"></script>
+        <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.1.min.js"></script>
+        <style>
+
+          html {
+            width: 100%;
+            height: 100%;
+          }
+          body {
+            width: 75%;
+            height: 100%;
+            margin: auto;
+          }
+        </style>
+    </head>
+<body>
+  <header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html"><span>El Paso </span>Multimodal</a>
+                </div>
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="index.html">Home</a></li>
+                        <li><a href="maps.html">Maps</a></li>
+                        <li><a href="plots.html">Plots</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+  </header>
+
+  <section>
+      <h2>El Paso Multimodal Survey: Plots</h2>
+      <p><b>Note: Plots open in a new browser tab</b></p>
+      <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#commute">Commute Mode</a></li>
+          <li><a data-toggle="tab" href="#nonCommute">Non-Commute <br>Mode</a></li>
+          <li><a data-toggle="tab" href="#bikeAtt">Bicycling <br>Attitudes</a></li>
+          <li><a data-toggle="tab" href="#walkAtt">Walking <br>Attitudes</a></li>
+          <li><a data-toggle="tab" href="#motDet">Biking & Walking <br>Motivators/Deterrents</a></li>
+          <li><a data-toggle="tab" href="#trans">Transportation <br>Attitudes</a></li>
+          <li><a data-toggle="tab" href="#neighb">Neighborhood <br>Attitudes</a></li>
+          <li><a data-toggle="tab" href="#health">Health</a></li>
+      </ul>
+
+      <ul class="tab-content">
+
+          <!--TAB 1: Commute-->
+          <li class="tab-pane fade in active" id="commute">
+            <ul class="tab-content">
+              <br />
+              <h4>Select a plot below:</h4>
+              <a href="plots/commute/age.html" target="_blank">Commute Mode by Age</a><br />
+              <a href="plots/commute/gender.html" target="_blank">Commute Mode by Gender</a><br />
+              <a href="plots/commute/income.html" target="_blank">Commute Mode by Income</a><br />
+              <a href="plots/commute/race_ethnicity.html" target="_blank">Commute Mode by Race/Ethnicity</a><br />
+              <a href="plots/commute/distance.html" target="_blank">Commute Distance by Commute Mode</a><br />
+            </ul>
+          </li>
+
+          <!--TAB 2: Non-Commute-->
+          <li class="tab-pane" id="nonCommute">
+            <ul class="tab-content">
+              <br />
+              <h4>Select a plot below:</h4>
+              <a href="plots/non_commute/age.html" target="_blank">Non-Commute Mode by Age</a><br />
+              <a href="plots/non_commute/gender.html" target="_blank">Non-Commute Mode by Gender</a><br />
+              <a href="plots/non_commute/income.html" target="_blank">Non-Commute Mode by Income</a><br />
+              <a href="plots/non_commute/race_ethnicity.html" target="_blank">Non-Commute Mode by Race/Ethnicity</a><br />
+            </ul>
+          </li>
+
+          <!--TAB 3: Bicycling Attitudes-->
+          <li class="tab-pane" id="bikeAtt">
+            <ul class="tab-content">
+              <br />
+              <h4>Select a plot below:</h4>
+              <a href="plots/bicycling/age.html" target="_blank">Bicycling Attitudes by Age</a><br />
+              <a href="plots/bicycling/gender.html" target="_blank">Bicycling Attitudes by Gender</a><br />
+              <a href="plots/bicycling/income.html" target="_blank">Bicycling Attitudes by Income</a><br />
+              <a href="plots/bicycling/race_ethnicity.html" target="_blank">Bicycling Attitudes by Race/Ethnicity</a><br />
+            </ul>
+          </li>
+
+          <!--TAB 4: Walking Attitudes-->
+          <li class="tab-pane" id="walkAtt">
+            <ul class="tab-content">
+              <br />
+              <h4>Select a plot below:</h4>
+              <a href="plots/walking/age.html" target="_blank">Walking Attitudes by Age</a><br />
+              <a href="plots/walking/gender.html" target="_blank">Walking Attitudes by Gender</a><br />
+              <a href="plots/walking/income.html" target="_blank">Walking Attitudes by Income</a><br />
+              <a href="plots/walking/race_ethnicity.html" target="_blank">Walking Attitudes by Race/Ethnicity</a><br />
+            </ul>
+          </li>
+
+          <!--TAB 5: Walking Motivators/Deterrents-->
+          <li class="tab-pane" id="motDet">
+            <ul class="tab-content">
+              <br />
+              <h4>Select a plot below:</h4>
+              <a href="plots/bicycling/motivators.html" target="_blank">Bicycling Motivators by Bicycling Orientation</a><br />
+              <a href="plots/bicycling/deterrents.html" target="_blank">Bicycling Deterrents by Bicycling Orientation</a><br />
+              <a href="plots/walking/motivators.html" target="_blank">Walking Motivators by Non-Commute Mode</a><br />
+              <a href="plots/walking/deterrents.html" target="_blank">Walking Deterrents by Non-Commute Mode</a><br />
+            </ul>
+          </li>
+
+          <!--TAB 6: Transportation Attitudes-->
+          <li class="tab-pane" id="trans">
+            <ul class="tab-content">
+              <br />
+              <h4>Select a plot below:</h4>
+              <a href="plots/commute/trans_emissions.html" target="_blank">Concern for Emissions by Commute Mode</a><br />
+              <a href="plots/commute/trans_fuel.html" target="_blank">Concern for Fuel Costs by Commute Mode</a><br />
+              <a href="plots/commute/trans_highways.html" target="_blank">Support for Highway Expansion by Commute Mode</a><br />
+              <a href="plots/commute/trans_shorttrips.html" target="_blank">Preference for Walking/Biking for Short Trips by Commute Mode</a><br />
+              <a href="plots/commute/trans_transit.html" target="_blank">Support for Transit by Commute Mode</a><br />
+              <a href="plots/non_commute/trans.html" target="_blank">Transportation Attitudes by Non-Commute Mode</a><br />
+            </ul>
+          </li>
+
+          <!--TAB 7: Neighborhood Attitudes-->
+          <li class="tab-pane" id="neighb">
+            <ul class="tab-content">
+              <br />
+              <h4>Select a plot below:</h4>
+              <a href="plots/commute/neighb_crime.html" target="_blank">Pereception of Neighborhood Crime by Commute Mode</a><br />
+              <a href="plots/commute/neighb_traffic.html" target="_blank">Pereception of Neighborhood Traffic by Commute Mode</a><br />
+              <a href="plots/commute/neighb_infra.html" target="_blank">Pereception of Neighborhood Sidewalks/Shoulders by Commute Mode</a><br />
+              <a href="plots/commute/neighb_routes.html" target="_blank">Pereception of Neighborhood Bicycle Routes by Commute Mode</a><br />
+              <a href="plots/commute/neighb_transit.html" target="_blank">Pereception of Neighborhood Transit by Commute Mode</a><br />
+              <a href="plots/commute/neighb_shop.html" target="_blank">Pereception of Neighborhood Shops/Restaurants by Commute Mode</a><br />
+              <a href="plots/non_commute/neighb.html" target="_blank">Neighborhood Attitudes by Non-Commute Mode</a><br />
+            </ul>
+          </li>
+
+          <!--TAB 8: Health-->
+          <li class="tab-pane" id="health">
+            <ul class="tab-content">
+              <br />
+              <h4>Select a plot below:</h4>
+              <a href="plots/commute/bmi.html" target="_blank">BMI by Commute Mode</a><br />
+              <a href="plots/commute/happy.html" target="_blank">Life Satisfaction by Commute Mode</a><br />
+              <a href="plots/commute/health.html" target="_blank">Health by Commute Mode</a><br />
+              <a href="plots/commute/health_eat.html" target="_blank">Eating Out by Commute Mode</a><br />
+              <a href="plots/commute/health_exercise.html" target="_blank">Exercise by Commute Mode</a><br />
+              <a href="plots/commute/health_fitness.html" target="_blank">Walking/Biking for Fitness by Commute Mode</a><br />
+              <a href="plots/commute/health_home.html" target="_blank">Walking/Biking Importance by Commute Mode</a><br />
+              <a href="plots/commute/health_park.html" target="_blank">Outdoor Activities by Commute Mode</a><br />
+              <a href="plots/non_commute/bmi.html" target="_blank">BMI by Non-Commute Mode</a><br />
+              <a href="plots/non_commute/happy.html" target="_blank">Life Satisfaction by Non-Commute Mode</a><br />
+              <a href="plots/non_commute/health.html" target="_blank">Health by Non-Commute Mode</a><br />
+              <a href="plots/non_commute/health_att.html" target="_blank">Health-Related Attitudes by Non-Commute Mode</a><br />
+
+            </ul>
+          </li>
+
+      </ul>
+      <br>
+  </section>
+
+  <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="widget">
+          <h5 class="widgetheading">Get in touch with us</h5>
+            <address>
+             El Paso MPO<br>
+             211 N Florence St<br>
+             El Paso, TX 79901<br>
+             915-212-7107</address>
+            <span>&copy; 2016</span>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="widget">
+          <h5 class="widgetheading"></h5>
+          <address>
+           Ipek Sener, PhD<br>
+           Assistant Research Scientist<br>
+           Texas A&M Transportation Institute<br>
+           505 E Huntland Dr, Suite 455<br>
+           Austin, TX 78752<br>
+           Tel 512.407.1119 | Fax 512.467.8971<br>
+           i-sener@tti.tamu.edu</address>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="widget">
+          <h5 class="widgetheading"></h5>
+          <ul class="link-list">
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+            <li><a href="#"></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="widget">
+          <h5 class="widgetheading">Pages</h5>
+          <ul class="link-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="maps.html">Maps</a></li>
+            <li><a href="plots.html">Plots</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,2972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>El Paso Multimodal Survey: Maps</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link href="css/fancybox/jquery.fancybox.css" rel="stylesheet">
+  <link href="css/jcarousel.css" rel="stylesheet" />
+  <link href="css/flexslider.css" rel="stylesheet" />
+  <link href="css/style.css" rel="stylesheet" />
+  <link href="skins/default.css" rel="stylesheet" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+  <script src="jquery-2.1.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+  <style>
+  #map1 {width: 1150px; height: 750px;}
+  #map2 {width: 1150px; height: 750px;}
+  #map3 {width: 1150px; height: 750px;}
+  #map4 {width: 1150px; height: 750px;}
+  #map5 {width: 1150px; height: 750px;}
+  #map6 {width: 1150px; height: 750px;}
+  #map7 {width: 1150px; height: 750px;}
+  #map8 {width: 1150px; height: 750px;}
+  #map9 {width: 1150px; height: 750px;}
+
+  .info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    }
+  .info h3 {
+        margin: 0 0 5px;
+        color: #777;
+        opacity: 1;
+    }
+  .legend {
+    line-height: 18px;
+    color: #555;
+    }
+  .legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+    }
+  </style>
+
+</head>
+<body>
+
+  <header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html"><span>El Paso </span>Multimodal</a>
+                </div>
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="index.html">Home</a></li>
+                        <li><a href="maps.html">Maps</a></li>
+                        <li><a href="plots.html">Plots</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+	</header>
+
+<div class="container">
+  <h2>El Paso Multimodal Survey: Maps</h2>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#map1">Neighborhood Attitudes</a></li>
+    <li><a data-toggle="tab" href="#map2">Employment</a></li>
+    <li><a data-toggle="tab" href="#map3">Health</a></li>
+    <li><a data-toggle="tab" href="#map4">Travel Decisions</a></li>
+    <li><a data-toggle="tab" href="#map5">Biking Attitudes</a></li>
+    <li><a data-toggle="tab" href="#map6">Biking Motivators/Deterrents</a></li>
+    <li><a data-toggle="tab" href="#map7">Walking</a></li>
+    <li><a data-toggle="tab" href="#map8">Transit</a></li>
+    <li><a data-toggle="tab" href="#map9">Mode Share</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="map1" class="tab-pane fade in active">
+
+            <script>
+
+            //Workaround to make sure map loads properly in tab
+            $("body").on("shown.bs.tab", function() {
+              map.invalidateSize(false);
+            });
+
+            var map = L.map('map1',{center: [31.98, -106.55], zoom: 10});
+
+            L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              }).addTo(map);
+
+            $.getJSON("zip.geojson",function(zcta){
+
+            var info = L.control();
+            info.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            info.update = function (props) {
+              var description1 = 'I am actively involved in my local <br />community: ';
+              var description2 = 'There are shops or restaurants within <br />walking or bicycling distance: ';
+              var description3 = 'There are parks or trails to run, walk, <br />or bike: ';
+              var description4 = 'There are bicycle storage facilities <br />(e.g. bicycle racks or cubbies): ';
+              var description5 = 'Neighborhood is safe from traffic for <br />walking or biking: ';
+              var description7 = 'Neighborhood is safe from crime for <br />walking or biking: ';
+              var description6 = 'Neighborhood has an attractive appearance: ';
+              var description8 = 'There is good street lighting at night: ';
+              var description9 = 'There are good public transit services: ';
+              var description10 = 'There are adequate sidewalks or road <br />shoulders: ';
+              var description11 = 'There are connected bicycle routes beyond <br />the neighborhood: ';
+
+              if (map.hasLayer(geojson1)) {
+                var infotext = description1.concat((props.ACTIVELYIN).toFixed(1));
+              } else if(map.hasLayer(geojson2)) {
+                  var infotext = description2.concat((props.SHOPSRESTA).toFixed(1));
+                } else if(map.hasLayer(geojson3)) {
+                    var infotext = description3.concat((props.PARKSORTRA).toFixed(1));
+                  } else if(map.hasLayer(geojson4)) {
+                      var infotext = description4.concat((props.BIKESTORAG).toFixed(1));
+                    } else if(map.hasLayer(geojson5)) {
+                        var infotext = description5.concat((props.SAFEFROMTR).toFixed(1));
+                      } else if(map.hasLayer(geojson6)) {
+                          var infotext = description6.concat((props.SAFEFROMCR).toFixed(1));
+                        } else if(map.hasLayer(geojson7)) {
+                            var infotext = description7.concat((props.ATTRACTIVE).toFixed(1));
+                          } else if(map.hasLayer(geojson8)) {
+                              var infotext = description8.concat((props.GOODLIGHT_).toFixed(1));
+                            } else if(map.hasLayer(geojson9)) {
+                                var infotext = description9.concat((props.GOODTRANSI).toFixed(1));
+                              } else if(map.hasLayer(geojson10)) {
+                                  var infotext = description10.concat((props.ADEQUATEIN).toFixed(1));
+                                } else if(map.hasLayer(geojson11)) {
+                                    var infotext = description11.concat((props.CONNECTEDR).toFixed(1));
+              }
+
+              this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+              infotext +
+              '<font size = "2"><i><br /> (1=Strongly Disagree, 5=Strongly Agree)</i></font>'
+                : 'Select a layer below and hover over features for more data');
+
+            };
+            info.addTo(map);
+
+            function getColor(d) {
+                return d > 4   ? '#004122' :
+                       d > 3 ? '#31a354' :
+                       d > 2   ? '#a1d7a2' :
+                       d > 1 ? '#d5eeb9' :
+                                 '#dedede';
+              }
+
+              function style1(feature) {
+                return {
+                    fillColor: getColor(feature.properties.ACTIVELYIN),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+              function style2(feature) {
+                return {
+                    fillColor: getColor(feature.properties.SHOPSRESTA),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+              function style3(feature) {
+                return {
+                    fillColor: getColor(feature.properties.PARKSORTRA),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+              function style4(feature) {
+                return {
+                    fillColor: getColor(feature.properties.BIKESTORAG),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+              function style5(feature) {
+                return {
+                    fillColor: getColor(feature.properties.SAFEFROMTR),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+              function style6(feature) {
+                return {
+                    fillColor: getColor(feature.properties.SAFEFROMCR),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+              function style7(feature) {
+                return {
+                    fillColor: getColor(feature.properties.ATTRACTIVE),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+              function style8(feature) {
+                return {
+                    fillColor: getColor(feature.properties.GOODLIGHT_),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+              function style9(feature) {
+                return {
+                    fillColor: getColor(feature.properties.GOODTRANSI),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+              function style10(feature) {
+                return {
+                    fillColor: getColor(feature.properties.ADEQUATEIN),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+              function style11(feature) {
+                return {
+                    fillColor: getColor(feature.properties.CONNECTEDR),
+                    weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+              }
+
+            var geojson1;
+            var geojson2;
+            var geojson3;
+            var geojson4;
+            var geojson5;
+            var geojson6;
+            var geojson7;
+            var geojson8;
+            var geojson9;
+            var geojson10;
+            var geojson11;
+
+            //Highlight feature on mouseover
+            function highlightFeature(e) {
+              var layer = e.target;
+              layer.setStyle({
+                  weight: 2, color: '#666', dashArray: '', fillOpacity: 0.7
+              });
+              if (!L.Browser.ie && !L.Browser.opera) {
+                  layer.bringToFront();
+              }
+              info.update(layer.feature.properties);
+            }
+
+            //Remove highlight and return to default state when mouse leaves
+            function resetHighlight(e) {
+              if (map.hasLayer(geojson1)) {
+                geojson1.resetStyle(e.target);
+              } else if(map.hasLayer(geojson2)) {
+                  geojson2.resetStyle(e.target);
+                } else if(map.hasLayer(geojson3)) {
+                    geojson3.resetStyle(e.target);
+                  } else if(map.hasLayer(geojson4)) {
+                      geojson4.resetStyle(e.target);
+                    } else if(map.hasLayer(geojson5)) {
+                        geojson5.resetStyle(e.target);
+                      } else if(map.hasLayer(geojson6)) {
+                          geojson6.resetStyle(e.target);
+                        } else if(map.hasLayer(geojson7)) {
+                            geojson7.resetStyle(e.target);
+                          } else if(map.hasLayer(geojson8)) {
+                              geojson8.resetStyle(e.target);
+                            } else if(map.hasLayer(geojson9)) {
+                                geojson9.resetStyle(e.target);
+                              } else if(map.hasLayer(geojson10)) {
+                                  geojson10.resetStyle(e.target);
+                                } else {
+                                    geojson11.resetStyle(e.target);
+              }
+              info.getContainer().innerHTML='Select a layer below and hover over features for more data';
+            }
+
+            function onEachFeature(feature, layer) {
+                layer.on({
+                    mouseover: highlightFeature,
+                    mouseout: resetHighlight
+                });
+            }
+
+            geojson1 = L.geoJson(zcta, {
+                style: style1, onEachFeature: onEachFeature }).addTo(map);
+            geojson2 = L.geoJson(zcta, {
+                style: style2, onEachFeature: onEachFeature })
+            geojson3 = L.geoJson(zcta, {
+                style: style3, onEachFeature: onEachFeature })
+            geojson4 = L.geoJson(zcta, {
+                style: style4, onEachFeature: onEachFeature })
+            geojson5 = L.geoJson(zcta, {
+                style: style5, onEachFeature: onEachFeature })
+            geojson6 = L.geoJson(zcta, {
+                style: style6, onEachFeature: onEachFeature })
+            geojson7 = L.geoJson(zcta, {
+                style: style7, onEachFeature: onEachFeature })
+            geojson8 = L.geoJson(zcta, {
+                style: style8, onEachFeature: onEachFeature })
+            geojson9 = L.geoJson(zcta, {
+                style: style9, onEachFeature: onEachFeature })
+            geojson10 = L.geoJson(zcta, {
+                style: style10, onEachFeature: onEachFeature })
+            geojson11 = L.geoJson(zcta, {
+                style: style11, onEachFeature: onEachFeature })
+
+            //Legend
+            var legend = L.control({position: 'bottomleft'});
+            legend.onAdd = function (map) {
+
+              var div = L.DomUtil.create('div', 'info legend'),
+                  grades = [1, 2, 3, 4],
+                  labels = ['<b>Average Response</b><br /><font size="2">(1: Strongly Disagree, 5: Strongly Agree)</font>'],
+                  from, to;
+
+              for (var i = 0; i < grades.length; i++) {
+                  from = grades[i];
+                  to = grades[i+1];
+
+                  labels.push(
+                    '<i style="background:' + getColor(from + 1) + '"></i> ' +
+                    from + (to ? ' - ' + to : ' - 5'));
+              }
+              div.innerHTML = labels.join('<br>');
+              return div;
+            };
+            legend.addTo(map);
+
+            //Control to toggle layers
+            var layers = {
+                'Community Involvement': geojson1,
+                'Shops or Restaurants': geojson2,
+                'Parks or Trails': geojson3,
+                'Bike Storage Facilities': geojson4,
+                'Safety from Traffic': geojson5,
+                'Safety from Crime': geojson6,
+                'Neighborhood Attractiveness': geojson7,
+                'Street Lighting': geojson8,
+                'Transit Service': geojson9,
+                'Sidewalks': geojson10,
+                'Bicycle Routes': geojson11
+            };
+            L.control.layers(layers).addTo(map);
+
+            });
+
+            </script>
+
+    </div>
+
+
+
+    <div id="map2" class="tab-pane fade">
+
+      <script>
+
+      //Workaround to make sure map loads properly in tab
+      $("body").on("shown.bs.tab", function() {
+        map2.invalidateSize(false);
+      });
+
+      var map2 = L.map('map2',{center: [31.98, -106.55], zoom: 10});
+
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map2);
+
+      $.getJSON("zip.geojson",function(zcta){
+
+      var info = L.control();
+      info.onAdd = function (map2) {
+          this._div = L.DomUtil.create('div', 'info');
+          this.update();
+          return this._div;
+      };
+      info.update = function (props) {
+        var description1 = 'Percent Employed Full Time: ';
+        var description2 = 'Percent Employed Part Time: ';
+        var description3 = 'Percent Have Multiple Jobs: ';
+        var description4 = 'Percent Self-Employed: ';
+        var description5 = 'Percent Unpaid Volunteer or Intern: ';
+        var description7 = 'Percent Homemaker or Stay-at-Home Parent: ';
+        var description6 = 'Percent Not Currently Employed: ';
+        var description8 = 'Percent Retired: ';
+        var description9 = 'Percent Student: ';
+        var description10 = 'Average Work Commute Distance: ';
+
+        if (map2.hasLayer(geojson1)) {
+          var infotext = description1.concat(Number(props.FULLTIME_m * 100).toFixed(1));
+        } else if(map2.hasLayer(geojson2)) {
+            var infotext = description2.concat(Number(props.PARTTIME_m * 100).toFixed(1));
+          } else if(map2.hasLayer(geojson3)) {
+              var infotext = description3.concat(Number(props.MULTIPLEJO * 100).toFixed(1));
+            } else if(map2.hasLayer(geojson4)) {
+                var infotext = description4.concat(Number(props.SELFEMPLOY * 100).toFixed(1));
+              } else if(map2.hasLayer(geojson5)) {
+                  var infotext = description5.concat(Number(props.VOLUNTEER_ * 100).toFixed(1));
+                } else if(map2.hasLayer(geojson6)) {
+                    var infotext = description6.concat(Number(props.HOMEMAKER_ * 100).toFixed(1));
+                  } else if(map2.hasLayer(geojson7)) {
+                      var infotext = description7.concat(Number(props.UNEMPLOYED * 100).toFixed(1));
+                    } else if(map2.hasLayer(geojson8)) {
+                        var infotext = description8.concat(Number(props.RETIRED_me * 100).toFixed(1));
+                      } else if(map2.hasLayer(geojson9)) {
+                          var infotext = description9.concat(Number(props.student_me * 100).toFixed(1));
+                        } else if(map2.hasLayer(geojson10)) {
+                            var infotext = description10.concat(Number(props.COMMUTEMIL).toFixed(1));
+        }
+
+        //Change pop-up text depnding on layer
+        if (map2.hasLayer(geojson10)) {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext + ' mi'
+              : 'Select a layer below and hover over features for more data');
+        } else {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext + '%'
+              : 'Select a layer below and hover over features for more data');
+        }
+      };
+      info.addTo(map2);
+
+      function getColor1(d) {
+          return d > 0.5   ? '#00140b' :
+                 d > 0.4 ? '#00412d' :
+                 d > 0.3 ? '#22733a' :
+                 d > 0.2 ? '#55a56e' :
+                 d > 0.1   ? '#a1d7a2' :
+                 d >= 0 ? '#d5eeb9' :
+                           '#dedede';
+        }
+        function getColor2(d) {
+              return d > 25   ? '#00140b' :
+                   d > 20 ? '#00412d' :
+                   d > 15 ? '#22733a' :
+                   d > 10 ? '#55a56e' :
+                   d > 5   ? '#a1d7a2' :
+                   d >= 0 ? '#d5eeb9' :
+                             '#dedede';
+          }
+
+        function style1(feature) {
+          return {
+              fillColor: getColor1(feature.properties.FULLTIME_m),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style2(feature) {
+          return {
+              fillColor: getColor1(feature.properties.PARTTIME_m),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style3(feature) {
+          return {
+              fillColor: getColor1(feature.properties.MULTIPLEJO),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style4(feature) {
+          return {
+              fillColor: getColor1(feature.properties.SELFEMPLOY),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style5(feature) {
+          return {
+              fillColor: getColor1(feature.properties.VOLUNTEER_),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style6(feature) {
+          return {
+              fillColor: getColor1(feature.properties.HOMEMAKER_),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style7(feature) {
+          return {
+              fillColor: getColor1(feature.properties.UNEMPLOYED),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style8(feature) {
+          return {
+              fillColor: getColor1(feature.properties.RETIRED_me),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style9(feature) {
+          return {
+              fillColor: getColor1(feature.properties.student_me),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style10(feature) {
+          return {
+              fillColor: getColor2(feature.properties.COMMUTEMIL),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+
+      var geojson1;
+      var geojson2;
+      var geojson3;
+      var geojson4;
+      var geojson5;
+      var geojson6;
+      var geojson7;
+      var geojson8;
+      var geojson9;
+      var geojson10;
+
+      //Highlight feature on mouseover
+      function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 2, color: '#666', dashArray: '', fillOpacity: 0.7
+        });
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+        info.update(layer.feature.properties);
+      }
+
+      //Remove highlight and return to default state when mouse leaves
+      function resetHighlight(e) {
+        if (map2.hasLayer(geojson1)) {
+          geojson1.resetStyle(e.target);
+        } else if(map2.hasLayer(geojson2)) {
+            geojson2.resetStyle(e.target);
+          } else if(map2.hasLayer(geojson3)) {
+              geojson3.resetStyle(e.target);
+            } else if(map2.hasLayer(geojson4)) {
+                geojson4.resetStyle(e.target);
+              } else if(map2.hasLayer(geojson5)) {
+                  geojson5.resetStyle(e.target);
+                } else if(map2.hasLayer(geojson6)) {
+                    geojson6.resetStyle(e.target);
+                  } else if(map2.hasLayer(geojson7)) {
+                      geojson7.resetStyle(e.target);
+                    } else if(map2.hasLayer(geojson8)) {
+                        geojson8.resetStyle(e.target);
+                      } else if(map2.hasLayer(geojson9)) {
+                          geojson9.resetStyle(e.target);
+                          } else {
+                              geojson10.resetStyle(e.target);
+        }
+        //info.update();
+        info.getContainer().innerHTML='Select a layer below and hover over features for more data';
+      }
+
+      function onEachFeature(feature, layer) {
+          layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight
+          });
+      }
+
+
+      geojson1 = L.geoJson(zcta, {
+          style: style1, onEachFeature: onEachFeature }).addTo(map2);
+      geojson2 = L.geoJson(zcta, {
+          style: style2, onEachFeature: onEachFeature })
+      geojson3 = L.geoJson(zcta, {
+          style: style3, onEachFeature: onEachFeature })
+      geojson4 = L.geoJson(zcta, {
+          style: style4, onEachFeature: onEachFeature })
+      geojson5 = L.geoJson(zcta, {
+          style: style5, onEachFeature: onEachFeature })
+      geojson6 = L.geoJson(zcta, {
+          style: style6, onEachFeature: onEachFeature })
+      geojson7 = L.geoJson(zcta, {
+          style: style7, onEachFeature: onEachFeature })
+      geojson8 = L.geoJson(zcta, {
+          style: style8, onEachFeature: onEachFeature })
+      geojson9 = L.geoJson(zcta, {
+          style: style9, onEachFeature: onEachFeature })
+      geojson10 = L.geoJson(zcta, {
+          style: style10, onEachFeature: onEachFeature })
+
+      var legend1 = L.control({position: 'bottomleft'});
+      var legend2 = L.control({position: 'bottomleft'});
+
+      //Percentage Legend
+      legend1.onAdd = function (map2) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [0, 10, 20, 30, 40, 50],
+            tgrades = [10, 20, 30, 40, 50, 100],
+            labels = ['<b>Percent</b>'],
+            from, to;
+
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColor1(from/100 + 0.05) + '"></i> ' +
+              from + ' - ' + to + '%');
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      //Mileage Legend
+      legend2.onAdd = function (map2) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [0, 5, 10, 15, 20, 25],
+            tgrades = [5, 10, 15, 20, 25, 30],
+            labels = ['<b>Distance</b>'],
+            from, to;
+
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColor2(from + 2.5) + '"></i> ' +
+              from + ' - ' + to + ' mi');
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      //Iniital legend on loading
+      legend1.addTo(map2);
+
+      //Toggle legend depending on base layer
+      map2.on('baselayerchange', function (eventLayer) {
+        if (eventLayer.name === 'Commute Distance') {
+          map2.removeControl(legend1);
+          legend2.addTo(map2);
+        } else {
+          map2.removeControl(legend2);
+          legend1.addTo(map2);
+        }
+      });
+
+      //Control to toggle layers
+      var layers = {
+          'Full-Time Employment': geojson1,
+          'Part-Time Employment': geojson2,
+          'Multiple Jobs': geojson3,
+          'Self-Employed': geojson4,
+          'Volunteer': geojson5,
+          'Homemaker/Stay-at-Home Parent': geojson6,
+          'Unemployed': geojson7,
+          'Retired': geojson8,
+          'Student': geojson9,
+          'Commute Distance': geojson10
+      };
+      L.control.layers(layers).addTo(map2);
+
+      });
+
+      </script>
+
+    </div>
+
+
+
+    <div id="map3" class="tab-pane fade">
+
+      <script>
+
+      //Workaround to make sure map loads properly in tab
+      $("body").on("shown.bs.tab", function() {
+        map3.invalidateSize(false);
+      });
+
+      var map3 = L.map('map3',{center: [31.98, -106.55], zoom: 10});
+
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map3);
+
+      $.getJSON("zip.geojson",function(zcta){
+
+      var info = L.control();
+      info.onAdd = function (map3) {
+          this._div = L.DomUtil.create('div', 'info');
+          this.update();
+          return this._div;
+      };
+      info.update = function (props) {
+        var description1 = 'Moderate Exercise Frequency: <br />';
+        var description2 = 'Vigorous Exercise Frequency: <br />';
+        var description3 = 'Body Mass Index: ';
+        var description4 = 'Self-Reported Level of Health: ';
+        var description5 = 'Self-Reported Level of Happiness: ';
+        var description6 = 'I eat healthy and pay attention to <br />my nutrition: ';
+        var description7 = 'I eat out frequently: ';
+        var description8 = 'I go to parks, playgrounds, golf courses, <br /> or hiking trails frequently: ';
+        var description9 = 'Walking/biking are important considerations <br />in choosing where I live: ';
+        var description10 = 'My walk/bike trips are mostly for <br />recreation/fitness: ';
+        var description11 = 'I follow a regular exercise routine: ';
+        var description12 = 'I do not mind walking/biking for trips <br />less than 10-15 minutes: ';
+
+        if (map3.hasLayer(geojson1)) {
+          var infotext = description1.concat(Number(props.MODEXFREQU).toFixed(1));
+        } else if(map3.hasLayer(geojson2)) {
+            var infotext = description2.concat(Number(props.VIGEXFREQU).toFixed(1));
+        } else if(map3.hasLayer(geojson3)) {
+            var infotext = description3.concat(Number(props.BMI_mean).toFixed(1));
+        } else if(map3.hasLayer(geojson4)) {
+            var infotext = description4.concat(Number(props.HEALTH_mea).toFixed(1));
+        } else if(map3.hasLayer(geojson5)) {
+            var infotext = description5.concat(Number(props.HAPPY_mean).toFixed(1));
+        } else if(map3.hasLayer(geojson6)) {
+            var infotext = description6.concat(Number(props.EATHEALTHY).toFixed(1));
+        } else if(map3.hasLayer(geojson7)) {
+            var infotext = description7.concat(Number(props.EATOUTALOT).toFixed(1));
+        } else if(map3.hasLayer(geojson8)) {
+            var infotext = description8.concat(Number(props.GOTOPARK_m).toFixed(1));
+        } else if(map3.hasLayer(geojson9)) {
+            var infotext = description9.concat(Number(props.CONSIDERWA).toFixed(1));
+        } else if(map3.hasLayer(geojson10)) {
+            var infotext = description10.concat(Number(props.WALKBIKEFO).toFixed(1));
+        } else if(map3.hasLayer(geojson11)) {
+            var infotext = description11.concat(Number(props.EXERCISERE).toFixed(1));
+        } else if(map3.hasLayer(geojson12)) {
+            var infotext = description12.concat(Number(props.DONTMINDSH).toFixed(1));
+        }
+
+        //Change pop-up text depnding on layer
+        if (map3.hasLayer(geojson1) || map3.hasLayer(geojson2)) {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext + ' times/month'
+              : 'Select a layer below and hover over features for more data');
+        } else if (map3.hasLayer(geojson3)) {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext
+              : 'Select a layer below and hover over features for more data');
+        } else {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext +   '<font size = "2"><i><br /> (1=Strongly Disagree, 5=Strongly Agree)</i></font>'
+              : 'Select a layer below and hover over features for more data');
+        }
+      };
+      info.addTo(map3);
+
+        function getColorModEx(d) {
+          return d > 16 ? '#00412d' :
+                 d > 14 ? '#22733a' :
+                 d > 12 ? '#55a56e' :
+                 d > 10 ? '#a1d7a2' :
+                 d >= 8 ? '#d5eeb9' :
+                          '#dedede';
+        }
+        function getColorVigEx(d) {
+          return d > 8 ? '#00412d' :
+                 d > 6 ? '#22733a' :
+                 d > 4 ? '#55a56e' :
+                 d > 2 ? '#a1d7a2' :
+                 d >= 0 ? '#d5eeb9' :
+                         '#dedede';
+        }
+        function getColorBMI(d) {
+          return d > 29 ? '#004122' :
+                 d > 28 ? '#31a354' :
+                 d > 27 ? '#a1d7a2' :
+                 d >= 26 ? '#d5eeb9' :
+                           '#dedede';
+        }
+        function getColorLikert(d) {
+          return d > 4 ? '#004122' :
+                 d > 3 ? '#31a354' :
+                 d > 2 ? '#a1d7a2' :
+                 d >= 1 ? '#d5eeb9' :
+                          '#dedede';
+        }
+
+        function style1(feature) {
+          return {
+              fillColor: getColorModEx(feature.properties.MODEXFREQU),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style2(feature) {
+          return {
+              fillColor: getColorVigEx(feature.properties.VIGEXFREQU),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style3(feature) {
+          return {
+              fillColor: getColorBMI(feature.properties.BMI_mean),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style4(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.HEALTH_mea),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style5(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.HAPPY_mean),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style6(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.EATHEALTHY),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style7(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.EATOUTALOT),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style8(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.GOTOPARK_m),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style9(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.CONSIDERWA),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style10(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.WALKBIKEFO),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style11(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.EXERCISERE),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style12(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.DONTMINDSH),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+
+      var geojson1;
+      var geojson2;
+      var geojson3;
+      var geojson4;
+      var geojson5;
+      var geojson6;
+      var geojson7;
+      var geojson8;
+      var geojson9;
+      var geojson10;
+      var geojson11;
+      var geojson12;
+
+      //Highlight feature on mouseover
+      function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 2, color: '#666', dashArray: '', fillOpacity: 0.7
+        });
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+        info.update(layer.feature.properties);
+      }
+
+      //Remove highlight and return to default state when mouse leaves
+      function resetHighlight(e) {
+        if (map3.hasLayer(geojson1)) {
+          geojson1.resetStyle(e.target);
+        } else if(map3.hasLayer(geojson2)) {
+            geojson2.resetStyle(e.target);
+          } else if(map3.hasLayer(geojson3)) {
+              geojson3.resetStyle(e.target);
+            } else if(map3.hasLayer(geojson4)) {
+                geojson4.resetStyle(e.target);
+              } else if(map3.hasLayer(geojson5)) {
+                  geojson5.resetStyle(e.target);
+                } else if(map3.hasLayer(geojson6)) {
+                    geojson6.resetStyle(e.target);
+                  } else if(map3.hasLayer(geojson7)) {
+                      geojson7.resetStyle(e.target);
+                    } else if(map3.hasLayer(geojson8)) {
+                        geojson8.resetStyle(e.target);
+                      } else if(map3.hasLayer(geojson9)) {
+                          geojson9.resetStyle(e.target);
+                        } else if(map3.hasLayer(geojson10)) {
+                            geojson10.resetStyle(e.target);
+                          } else if(map3.hasLayer(geojson11)) {
+                              geojson11.resetStyle(e.target);
+                            } else {
+                                geojson12.resetStyle(e.target);
+        }
+        //info.update();
+        info.getContainer().innerHTML='Select a layer below and hover over features for more data';
+      }
+
+      function onEachFeature(feature, layer) {
+          layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight
+          });
+      }
+
+      geojson1 = L.geoJson(zcta, {
+          style: style1, onEachFeature: onEachFeature }).addTo(map3);
+      geojson2 = L.geoJson(zcta, {
+          style: style2, onEachFeature: onEachFeature })
+      geojson3 = L.geoJson(zcta, {
+          style: style3, onEachFeature: onEachFeature })
+      geojson4 = L.geoJson(zcta, {
+          style: style4, onEachFeature: onEachFeature })
+      geojson5 = L.geoJson(zcta, {
+          style: style5, onEachFeature: onEachFeature })
+      geojson6 = L.geoJson(zcta, {
+          style: style6, onEachFeature: onEachFeature })
+      geojson7 = L.geoJson(zcta, {
+          style: style7, onEachFeature: onEachFeature })
+      geojson8 = L.geoJson(zcta, {
+          style: style8, onEachFeature: onEachFeature })
+      geojson9 = L.geoJson(zcta, {
+          style: style9, onEachFeature: onEachFeature })
+      geojson10 = L.geoJson(zcta, {
+          style: style10, onEachFeature: onEachFeature })
+      geojson11 = L.geoJson(zcta, {
+          style: style11, onEachFeature: onEachFeature })
+      geojson12 = L.geoJson(zcta, {
+          style: style12, onEachFeature: onEachFeature })
+
+      var legendModEx = L.control({position: 'bottomleft'});
+      var legendVigEx = L.control({position: 'bottomleft'});
+      var legendBMI = L.control({position: 'bottomleft'});
+      var legendLikert = L.control({position: 'bottomleft'});
+
+      legendModEx.onAdd = function (map3) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [8, 10, 12, 14, 16],
+            tgrades = [10, 12, 14, 16, 18],
+            labels = ['<b>Avg. Times/Month</b>'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorModEx(from + 1) + '"></i> ' +
+              from + ' - ' + to);
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      legendVigEx.onAdd = function (map3) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [0, 2, 4, 6, 8],
+            tgrades = [2, 4, 6, 8, 10],
+            labels = ['<b>Avg. Times/Month</b>'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorVigEx(from + 1) + '"></i> ' +
+              from + ' - ' + to);
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      legendBMI.onAdd = function (map3) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [26, 27, 28, 29],
+            tgrades = [27, 28, 29, 30],
+            labels = ['<b>Average BMI</b>'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorBMI(from + 0.5) + '"></i> ' +
+              from + ' - ' + to);
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      legendLikert.onAdd = function (map3) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [1, 2, 3, 4],
+            tgrades = [2, 3, 4, 5],
+            labels = ['<b>Average Response</b><br />(1=Strongly Disagree, 5=Strongly Agree)'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorLikert(from + 0.5) + '"></i> ' +
+              from + ' - ' + to);
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      //Iniital legend on loading
+      legendModEx.addTo(map3);
+      currentLegend = legendModEx;
+
+      map3.on('baselayerchange', function (eventLayer) {
+        if (eventLayer.name === 'Moderate Exercise') {
+          map3.removeControl(currentLegend);
+          currentLegend = legendModEx;
+          legendModEx.addTo(map3);
+        } else if (eventLayer.name === 'Vigorous Exercise') {
+          map3.removeControl(currentLegend);
+          currentLegend = legendVigEx;
+          legendVigEx.addTo(map3);
+        } else if (eventLayer.name === 'BMI') {
+          map3.removeControl(currentLegend);
+          currentLegend = legendBMI;
+          legendBMI.addTo(map3);
+        } else {
+          map3.removeControl(currentLegend);
+          currentLegend = legendLikert;
+            legendLikert.addTo(map3);
+        }
+      });
+
+      //Control to toggle layers
+      var layers = {
+        'Moderate Exercise': geojson1,
+        'Vigorous Exercise': geojson2,
+        'BMI': geojson3,
+        'Health': geojson4,
+        'Happiness': geojson5,
+        'Healthy Eating': geojson6,
+        'Eating Out': geojson7,
+        'Outdoor Recreation': geojson8,
+        'Walk/Bike Travel': geojson9,
+        'Walk/Bike Exercise': geojson10,
+        'Regular Exercise': geojson11,
+        'Short Walk/Bike Trips': geojson12
+      };
+      L.control.layers(layers).addTo(map3);
+
+      });
+
+      </script>
+
+    </div>
+
+
+
+    <div id="map4" class="tab-pane fade">
+
+      <script>
+      //Workaround to make sure map loads properly in tab
+      $("body").on("shown.bs.tab", function() {
+        map4.invalidateSize(false);
+      });
+
+      var map4 = L.map('map4',{center: [31.98, -106.55], zoom: 10});
+
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap4.org/copyright">OpenStreetmap4</a>'
+        }).addTo(map4);
+
+      $.getJSON("zip.geojson",function(zcta){
+
+      var info = L.control();
+      info.onAdd = function (map4) {
+          this._div = L.DomUtil.create('div', 'info');
+          this.update();
+          return this._div;
+      };
+      info.update = function (props) {
+        var description1 = 'Fuel prices influence my travel decisions: ';
+        var description2 = 'I try to limit my driving to reduce <br />vehicle emissions: ';
+        var description3 = 'We need to expand or build new highways <br />to reduce congestion: ';
+        var description4 = 'Transit should be the focus for future <br />transportation infrastructure: ';
+        var description5 = '<b>Motivation to Consider Travel Alternatives </b><br />Transit closer to work/school/home: ';
+        var description6 = '<b>Motivation to Consider Travel Alternatives </b><br />More reliable transit service: ';
+        var description7 = '<b>Motivation to Consider Travel Alternatives </b><br />Improved access to park & ride: ';
+        var description8 = '<b>Motivation to Consider Travel Alternatives </b><br />More information about ride share programs: ';
+        var description9 = '<b>Motivation to Consider Travel Alternatives </b><br />Safer bicycle routes: ';
+        var description10 = '<b>Motivation to Consider Travel Alternatives </b><br />Safer walking routes: ';
+        var description11 = '<b>Motivation to Consider Travel Alternatives </b><br />Flexible work/school schedule: ';
+
+        if (map4.hasLayer(geojson1)) {
+          var infotext = description1.concat(Number(props.FUELPRICES).toFixed(1));
+        } else if(map4.hasLayer(geojson2)) {
+            var infotext = description2.concat(Number(props.LIMITMYDRI).toFixed(1));
+        } else if(map4.hasLayer(geojson3)) {
+            var infotext = description3.concat(Number(props.NEECTOEXPA).toFixed(1));
+        } else if(map4.hasLayer(geojson4)) {
+            var infotext = description4.concat(Number(props.FOCUSONTRA).toFixed(1));
+        } else if(map4.hasLayer(geojson5)) {
+            var infotext = description5.concat(Number(props.CLOSERTRAN).toFixed(1));
+        } else if(map4.hasLayer(geojson6)) {
+            var infotext = description6.concat(Number(props.RELIABLETR).toFixed(1));
+        } else if(map4.hasLayer(geojson7)) {
+            var infotext = description7.concat(Number(props.IMPROVEDAC).toFixed(1));
+        } else if(map4.hasLayer(geojson8)) {
+            var infotext = description8.concat(Number(props.MOREINFO_m).toFixed(1));
+        } else if(map4.hasLayer(geojson9)) {
+            var infotext = description9.concat(Number(props.SAFERBIKER).toFixed(1));
+        } else if(map4.hasLayer(geojson10)) {
+            var infotext = description10.concat(Number(props.SAFERWALKR).toFixed(1));
+        } else if(map4.hasLayer(geojson11)) {
+            var infotext = description11.concat(Number(props.FLEXSCHEDU).toFixed(1));
+        }
+
+        //Change pop-up text depnding on layer
+        if (map4.hasLayer(geojson1) || map4.hasLayer(geojson2) || map4.hasLayer(geojson3) || map4.hasLayer(geojson4)) {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext +   '<font size = "2"><i><br /> (1=Strongly Disagree, 5=Strongly Agree)</i></font>'
+              : 'Select a layer below and hover over features for more data');
+        } else {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext +   '<font size = "2"><i><br /> (1=Has no effect on my motivation, 3=Motivates me a lot)</i></font>'
+              : 'Select a layer below and hover over features for more data');
+        }
+      };
+      info.addTo(map4);
+
+        function getColorLikert(d) {
+          return d > 4 ? '#004122' :
+                 d > 3 ? '#31a354' :
+                 d > 2 ? '#a1d7a2' :
+                 d >= 1 ? '#d5eeb9' :
+                          '#dedede';
+        }
+        function getColorMotivate(d) {
+          return d > 2.5 ? '#004122' :
+                 d > 2 ? '#31a354' :
+                 d > 1.5 ? '#a1d7a2' :
+                 d >= 1 ? '#d5eeb9' :
+                           '#dedede';
+        }
+
+        function style1(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.FUELPRICES),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style2(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.LIMITMYDRI),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style3(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.NEECTOEXPA),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style4(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.FOCUSONTRA),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style5(feature) {
+          return {
+              fillColor: getColorMotivate(feature.properties.CLOSERTRAN),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style6(feature) {
+          return {
+              fillColor: getColorMotivate(feature.properties.RELIABLETR),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style7(feature) {
+          return {
+              fillColor: getColorMotivate(feature.properties.IMPROVEDAC),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style8(feature) {
+          return {
+              fillColor: getColorMotivate(feature.properties.MOREINFO_m),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style9(feature) {
+          return {
+              fillColor: getColorMotivate(feature.properties.SAFERBIKER),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style10(feature) {
+          return {
+              fillColor: getColorMotivate(feature.properties.SAFERWALKR),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style11(feature) {
+          return {
+              fillColor: getColorMotivate(feature.properties.FLEXSCHEDU),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+
+      var geojson1;
+      var geojson2;
+      var geojson3;
+      var geojson4;
+      var geojson5;
+      var geojson6;
+      var geojson7;
+      var geojson8;
+      var geojson9;
+      var geojson10;
+      var geojson11;
+
+      //Highlight feature on mouseover
+      function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 2, color: '#666', dashArray: '', fillOpacity: 0.7
+        });
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+        info.update(layer.feature.properties);
+      }
+
+      //Remove highlight and return to default state when mouse leaves
+      function resetHighlight(e) {
+        if (map4.hasLayer(geojson1)) {
+          geojson1.resetStyle(e.target);
+        } else if(map4.hasLayer(geojson2)) {
+            geojson2.resetStyle(e.target);
+          } else if(map4.hasLayer(geojson3)) {
+              geojson3.resetStyle(e.target);
+            } else if(map4.hasLayer(geojson4)) {
+                geojson4.resetStyle(e.target);
+              } else if(map4.hasLayer(geojson5)) {
+                  geojson5.resetStyle(e.target);
+                } else if(map4.hasLayer(geojson6)) {
+                    geojson6.resetStyle(e.target);
+                  } else if(map4.hasLayer(geojson7)) {
+                      geojson7.resetStyle(e.target);
+                    } else if(map4.hasLayer(geojson8)) {
+                        geojson8.resetStyle(e.target);
+                      } else if(map4.hasLayer(geojson9)) {
+                          geojson9.resetStyle(e.target);
+                        } else if(map4.hasLayer(geojson10)) {
+                            geojson10.resetStyle(e.target);
+                            } else {
+                                geojson11.resetStyle(e.target);
+        }
+        //info.update();
+        info.getContainer().innerHTML='Select a layer below and hover over features for more data';
+      }
+
+      function onEachFeature(feature, layer) {
+          layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight
+          });
+      }
+
+      geojson1 = L.geoJson(zcta, {
+          style: style1, onEachFeature: onEachFeature }).addTo(map4);
+      geojson2 = L.geoJson(zcta, {
+          style: style2, onEachFeature: onEachFeature })
+      geojson3 = L.geoJson(zcta, {
+          style: style3, onEachFeature: onEachFeature })
+      geojson4 = L.geoJson(zcta, {
+          style: style4, onEachFeature: onEachFeature })
+      geojson5 = L.geoJson(zcta, {
+          style: style5, onEachFeature: onEachFeature })
+      geojson6 = L.geoJson(zcta, {
+          style: style6, onEachFeature: onEachFeature })
+      geojson7 = L.geoJson(zcta, {
+          style: style7, onEachFeature: onEachFeature })
+      geojson8 = L.geoJson(zcta, {
+          style: style8, onEachFeature: onEachFeature })
+      geojson9 = L.geoJson(zcta, {
+          style: style9, onEachFeature: onEachFeature })
+      geojson10 = L.geoJson(zcta, {
+          style: style10, onEachFeature: onEachFeature })
+      geojson11 = L.geoJson(zcta, {
+          style: style11, onEachFeature: onEachFeature })
+
+      var legendLikert = L.control({position: 'bottomleft'});
+      var legendMotivate = L.control({position: 'bottomleft'});
+
+      legendLikert.onAdd = function (map4) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [1, 2, 3, 4],
+            tgrades = [2, 3, 4, 5],
+            labels = ['<b>Average Response</b><br />(1=Strongly Disagree, 5=Strongly Agree)'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorLikert(from + 0.5) + '"></i> ' +
+              from + ' - ' + to);
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      legendMotivate.onAdd = function (map4) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [1.0, 1.5, 2.0, 2.5],
+            tgrades = [1.5, 2.0, 2.5, 3],
+            labels = ['<b>Average Response</b><br />(1=Has no effect on my motivation,<br />5=Motivates me a lot)'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorMotivate(from + 0.25) + '"></i> ' +
+              from + ' - ' + to);
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      //Iniital legend on loading
+      legendLikert.addTo(map4);
+      currentLegend = legendLikert;
+
+      map4.on('baselayerchange', function (eventLayer) {
+        if (eventLayer.name === 'Fuel Prices' || eventLayer.name === 'Vehicle Emissions' ||
+        eventLayer.name === 'Highway Expansion' || eventLayer.name === 'Transit Exapansion') {
+          map4.removeControl(currentLegend);
+          currentLegend = legendLikert;
+          legendLikert.addTo(map4);
+        } else {
+          map4.removeControl(currentLegend);
+          currentLegend = legendMotivate;
+            legendMotivate.addTo(map4);
+        }
+      });
+
+      //Control to toggle layers
+      var layers = {
+        'Fuel Prices': geojson1,
+        'Vehicle Emissions': geojson2,
+        'Highway Expansion': geojson3,
+        'Transit Exapansion': geojson4,
+        'Transit Nearby': geojson5,
+        'Transit Reliability': geojson6,
+        'Park & Ride Access': geojson7,
+        'Ride Share Information': geojson8,
+        'Bike Route Safety': geojson9,
+        'Walk Route Safety': geojson10,
+        'Flex Schedule': geojson11,
+      };
+      L.control.layers(layers).addTo(map4);
+
+      });
+
+      </script>
+
+    </div>
+
+    <div id="map5" class="tab-pane fade">
+
+      <script>
+      //Workaround to make sure map loads properly in tab
+      $("body").on("shown.bs.tab", function() {
+        map5.invalidateSize(false);
+      });
+
+      var map5 = L.map('map5',{center: [31.98, -106.55], zoom: 10});
+
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap5.org/copyright">OpenStreetmap5</a>'
+        }).addTo(map5);
+
+      $.getJSON("zip.geojson",function(zcta){
+
+      var info = L.control();
+      info.onAdd = function (map5) {
+          this._div = L.DomUtil.create('div', 'info');
+          this.update();
+          return this._div;
+      };
+      info.update = function (props) {
+        var description1 = 'Bicycling is good for my health: <br />';
+        var description2 = 'Bicycling is less stressful than driving: <br />';
+        var description3 = 'Bicycling takes too much time: ';
+        var description4 = 'Buying and maintaining a bicycle is expensive: ';
+        var description5 = 'I wear nice clothes that will get <br />wrinkled/dirtied bicycling: ';
+        var description6 = "Bicycling means I do not have to <br />worry about parking: ";
+        var description7 = 'Whenever possible, I choose bicycling <br />instead of driving: ';
+        var description8 = '<b>Bicycling Orientation</b><br />I am comfortable bicycling anywhere, anytime: ';
+        var description9 = '<b>Bicycling Orientation</b><br />I am comfortable on a bicycle lane <br />or trail/paved path: ';
+        var description10 = '<b>Bicycling Orientation</b><br />I am only comfortable on trails or <br />off-road bike paths: ';
+        var description11 = '<b>Bicycling Orientation</b><br />I do not bicycle, but might consider <br />bicycling in the future: ';
+        var description12 = '<b>Bicycling Orientation</b><br />I am not interested in bicycling: ';
+
+        if (map5.hasLayer(geojson1)) {
+          var infotext = description1.concat(Number(props.BIKINGGOOD).toFixed(1));
+        } else if(map5.hasLayer(geojson2)) {
+            var infotext = description2.concat(Number(props.BIKINGLESS).toFixed(1));
+        } else if(map5.hasLayer(geojson3)) {
+            var infotext = description3.concat(Number(props.BIKINGTIME).toFixed(1));
+        } else if(map5.hasLayer(geojson4)) {
+            var infotext = description4.concat(Number(props.BIKINGEXPE).toFixed(1));
+        } else if(map5.hasLayer(geojson5)) {
+            var infotext = description5.concat(Number(props.WEARNICECL).toFixed(1));
+        } else if(map5.hasLayer(geojson6)) {
+            var infotext = description6.concat(Number(props.PARKINGNOW).toFixed(1));
+        } else if(map5.hasLayer(geojson7)) {
+            var infotext = description7.concat(Number(props.WHENICAN_m).toFixed(1));
+        } else if(map5.hasLayer(geojson8)) {
+            var infotext = description8.concat(Number(props.bikeorient*100).toFixed(1));
+        } else if(map5.hasLayer(geojson9)) {
+            var infotext = description9.concat(Number(props.bikeorie_1*100).toFixed(1));
+        } else if(map5.hasLayer(geojson10)) {
+            var infotext = description10.concat(Number(props.bikeorie_2*100).toFixed(1));
+        } else if(map5.hasLayer(geojson11)) {
+            var infotext = description11.concat(Number(props.bikeorie_3*100).toFixed(1));
+        } else if(map5.hasLayer(geojson12)) {
+            var infotext = description12.concat(Number(props.bikeorie_4*100).toFixed(1));
+        }
+
+        //Change pop-up text depnding on layer
+        if (map5.hasLayer(geojson8) || map5.hasLayer(geojson9) || map5.hasLayer(geojson10) ||
+        map5.hasLayer(geojson11) || map5.hasLayer(geojson12)) {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext + '%'
+              : 'Select a layer below and hover over features for more data');
+        } else {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext +   '<font size = "2"><i><br /> (1=Strongly Disagree, 5=Strongly Agree)</i></font>'
+              : 'Select a layer below and hover over features for more data');
+        }
+      };
+      info.addTo(map5);
+
+        function getColorPct(d) {
+          return d > .4 ? '#00412d' :
+                 d > .3 ? '#22733a' :
+                 d > .2 ? '#55a56e' :
+                 d > .1 ? '#a1d7a2' :
+                 d >= 0 ? '#d5eeb9' :
+                          '#dedede';
+        }
+        function getColorLikert(d) {
+          return d > 4 ? '#004122' :
+                 d > 3 ? '#31a354' :
+                 d > 2 ? '#a1d7a2' :
+                 d >= 1 ? '#d5eeb9' :
+                          '#dedede';
+        }
+
+        function style1(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.BIKINGGOOD),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style2(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.BIKINGLESS),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style3(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.BIKINGTIME),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style4(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.BIKINGEXPE),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style5(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.WEARNICECL),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style6(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.PARKINGNOW),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style7(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.WHENICAN_m),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style8(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikeorient),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style9(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikeorie_1),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style10(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikeorie_2),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style11(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikeorie_3),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style12(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikeorie_4),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+
+      var geojson1;
+      var geojson2;
+      var geojson3;
+      var geojson4;
+      var geojson5;
+      var geojson6;
+      var geojson7;
+      var geojson8;
+      var geojson9;
+      var geojson10;
+      var geojson11;
+      var geojson12;
+
+      //Highlight feature on mouseover
+      function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 2, color: '#666', dashArray: '', fillOpacity: 0.7
+        });
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+        info.update(layer.feature.properties);
+      }
+
+      //Remove highlight and return to default state when mouse leaves
+      function resetHighlight(e) {
+        if (map5.hasLayer(geojson1)) {
+          geojson1.resetStyle(e.target);
+        } else if(map5.hasLayer(geojson2)) {
+            geojson2.resetStyle(e.target);
+          } else if(map5.hasLayer(geojson3)) {
+              geojson3.resetStyle(e.target);
+            } else if(map5.hasLayer(geojson4)) {
+                geojson4.resetStyle(e.target);
+              } else if(map5.hasLayer(geojson5)) {
+                  geojson5.resetStyle(e.target);
+                } else if(map5.hasLayer(geojson6)) {
+                    geojson6.resetStyle(e.target);
+                  } else if(map5.hasLayer(geojson7)) {
+                      geojson7.resetStyle(e.target);
+                    } else if(map5.hasLayer(geojson8)) {
+                        geojson8.resetStyle(e.target);
+                      } else if(map5.hasLayer(geojson9)) {
+                          geojson9.resetStyle(e.target);
+                        } else if(map5.hasLayer(geojson10)) {
+                            geojson10.resetStyle(e.target);
+                          } else if(map5.hasLayer(geojson11)) {
+                              geojson11.resetStyle(e.target);
+                            } else {
+                                geojson12.resetStyle(e.target);
+        }
+        //info.update();
+        info.getContainer().innerHTML='Select a layer below and hover over features for more data';
+      }
+
+      function onEachFeature(feature, layer) {
+          layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight
+          });
+      }
+
+      geojson1 = L.geoJson(zcta, {
+          style: style1, onEachFeature: onEachFeature }).addTo(map5);
+      geojson2 = L.geoJson(zcta, {
+          style: style2, onEachFeature: onEachFeature })
+      geojson3 = L.geoJson(zcta, {
+          style: style3, onEachFeature: onEachFeature })
+      geojson4 = L.geoJson(zcta, {
+          style: style4, onEachFeature: onEachFeature })
+      geojson5 = L.geoJson(zcta, {
+          style: style5, onEachFeature: onEachFeature })
+      geojson6 = L.geoJson(zcta, {
+          style: style6, onEachFeature: onEachFeature })
+      geojson7 = L.geoJson(zcta, {
+          style: style7, onEachFeature: onEachFeature })
+      geojson8 = L.geoJson(zcta, {
+          style: style8, onEachFeature: onEachFeature })
+      geojson9 = L.geoJson(zcta, {
+          style: style9, onEachFeature: onEachFeature })
+      geojson10 = L.geoJson(zcta, {
+          style: style10, onEachFeature: onEachFeature })
+      geojson11 = L.geoJson(zcta, {
+          style: style11, onEachFeature: onEachFeature })
+      geojson12 = L.geoJson(zcta, {
+          style: style12, onEachFeature: onEachFeature })
+
+      var legendPct = L.control({position: 'bottomleft'});
+      var legendLikert = L.control({position: 'bottomleft'});
+
+      legendPct.onAdd = function (map5) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [0, .1, .2, .3, .4],
+            tgrades = [.1, .2, .3, .4, 1],
+            labels = ['<b>Percentage</b>'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorPct(from + .05) + '"></i> ' +
+              from*100 + '% - ' + to*100 + '%');
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      legendLikert.onAdd = function (map5) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [1, 2, 3, 4],
+            tgrades = [2, 3, 4, 5],
+            labels = ['<b>Average Response</b><br />(1=Strongly Disagree, 5=Strongly Agree)'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorLikert(from + 0.5) + '"></i> ' +
+              from + ' - ' + to);
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      //Iniital legend on loading
+      legendLikert.addTo(map5);
+      currentLegend = legendLikert;
+
+      map5.on('baselayerchange', function (eventLayer) {
+        if (eventLayer.name === 'Comfortable Anywhere' || eventLayer.name === 'Comfortable on Bike Lanes' || eventLayer.name === 'Comfortable Only on Trails' ||
+        eventLayer.name === 'Do Not Bicycle, Would Consider' || eventLayer.name === 'Not Interested in Bicycling') {
+          map5.removeControl(currentLegend);
+          currentLegend = legendPct;
+          legendPct.addTo(map5);
+        } else {
+          map5.removeControl(currentLegend);
+          currentLegend = legendLikert;
+          legendLikert.addTo(map5);
+        }
+      });
+
+      //Control to toggle layers
+      var layers = {
+        'Health': geojson1,
+        'Stress': geojson2,
+        'Time': geojson3,
+        'Cost': geojson4,
+        'Clothes': geojson5,
+        'Parking': geojson6,
+        'Biking vs. Driving': geojson7,
+        'Comfortable Anywhere': geojson8,
+        'Comfortable on Bike Lanes': geojson9,
+        'Comfortable Only on Trails': geojson10,
+        'Do Not Bicycle, Would Consider': geojson11,
+        'Not Interested in Bicycling': geojson12,
+      };
+      L.control.layers(layers).addTo(map5);
+
+      });
+
+      </script>
+
+    </div>
+
+
+    <div id="map6" class="tab-pane fade">
+
+      <script>
+      //Workaround to make sure map loads properly in tab
+      $("body").on("shown.bs.tab", function() {
+        map6.invalidateSize(false);
+      });
+
+      var map6 = L.map('map6',{center: [31.98, -106.55], zoom: 10});
+
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap6.org/copyright">OpenStreetmap6</a>'
+        }).addTo(map6);
+
+      $.getJSON("zip.geojson",function(zcta){
+
+      var info = L.control();
+      info.onAdd = function (map6) {
+          this._div = L.DomUtil.create('div', 'info');
+          this.update();
+          return this._div;
+      };
+      info.update = function (props) {
+        var description1 = 'Deterrent - Traffic safety: ';
+        var description2 = 'Deterrent - Travel distance: ';
+        var description3 = 'Deterrent - Hilly terrain: ';
+        var description4 = 'Deterrent - Lack of facilities at <br />destination (e.g. bike racks, showers): ';
+        var description5 = 'Deterrent - Lack of travel time/distance <br />information: ';
+        var description6 = 'Deterrent - Lack of directional signage: ';
+        var description7 = 'Deterrent - Disrepair of bike lanes <br />or trails: ';
+        var description8 = 'Deterrent - Inclement weather: ';
+        var description9 = 'Deterrent - Unable to carry personal <br />items: ';
+        var description10 = 'Motivator - Amenities (e.g. bike <br />racks, cubbies, showers): ';
+        var description11 = 'Motivator - Aesthetics (e.g trees, lighting): ';
+        var description12 = 'Motivator - Businesses with bike <br /> storage facilities: ';
+        var description13 = 'Motivator - Connected bicycle lanes: ';
+
+        if (map6.hasLayer(geojson1)) {
+          var infotext = description1.concat(Number(props.bikedeter1*100).toFixed(1));
+        } else if(map6.hasLayer(geojson2)) {
+            var infotext = description2.concat(Number(props.bikedeter2*100).toFixed(1));
+        } else if(map6.hasLayer(geojson3)) {
+            var infotext = description3.concat(Number(props.bikedeter3*100).toFixed(1));
+        } else if(map6.hasLayer(geojson4)) {
+            var infotext = description4.concat(Number(props.bikedeter4*100).toFixed(1));
+        } else if(map6.hasLayer(geojson5)) {
+            var infotext = description5.concat(Number(props.bikedeter5*100).toFixed(1));
+        } else if(map6.hasLayer(geojson6)) {
+            var infotext = description6.concat(Number(props.bikedeter6*100).toFixed(1));
+        } else if(map6.hasLayer(geojson7)) {
+            var infotext = description7.concat(Number(props.bikedeter7*100).toFixed(1));
+        } else if(map6.hasLayer(geojson8)) {
+            var infotext = description8.concat(Number(props.bikedeter8*100).toFixed(1));
+        } else if(map6.hasLayer(geojson9)) {
+            var infotext = description9.concat(Number(props.bikedeter9*100).toFixed(1));
+        } else if(map6.hasLayer(geojson10)) {
+            var infotext = description10.concat(Number(props.bikemotiva*100).toFixed(1));
+        } else if(map6.hasLayer(geojson11)) {
+            var infotext = description11.concat(Number(props.bikemoti_1*100).toFixed(1));
+        } else if(map6.hasLayer(geojson12)) {
+            var infotext = description12.concat(Number(props.bikemoti_2*100).toFixed(1));
+        } else if(map6.hasLayer(geojson13)) {
+            var infotext = description13.concat(Number(props.bikemoti_3*100).toFixed(1));
+        }
+
+        this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+        infotext + '%'
+          : 'Select a layer below and hover over features for more data');
+      };
+      info.addTo(map6);
+
+        function getColorPct(d) {
+          return d > .6 ? '#00412d' :
+                 d > .45 ? '#22733a' :
+                 d > .3 ? '#55a56e' :
+                 d > .15 ? '#a1d7a2' :
+                 d >= 0 ? '#d5eeb9' :
+                          '#dedede';
+        }
+
+        function style1(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikedeter1),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style2(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikedeter2),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style3(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikedeter3),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style4(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikedeter4),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style5(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikedeter5),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style6(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikedeter6),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style7(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikedeter7),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style8(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikedeter8),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style9(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikedeter9),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style10(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikemotiva),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style11(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikemoti_1),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style12(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikemoti_2),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style13(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bikemoti_3),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+
+      var geojson1;
+      var geojson2;
+      var geojson3;
+      var geojson4;
+      var geojson5;
+      var geojson6;
+      var geojson7;
+      var geojson8;
+      var geojson9;
+      var geojson10;
+      var geojson11;
+      var geojson12;
+      var geojson13;
+
+      //Highlight feature on mouseover
+      function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 2, color: '#666', dashArray: '', fillOpacity: 0.7
+        });
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+        info.update(layer.feature.properties);
+      }
+
+      //Remove highlight and return to default state when mouse leaves
+      function resetHighlight(e) {
+        if (map6.hasLayer(geojson1)) {
+          geojson1.resetStyle(e.target);
+        } else if(map6.hasLayer(geojson2)) {
+            geojson2.resetStyle(e.target);
+          } else if(map6.hasLayer(geojson3)) {
+              geojson3.resetStyle(e.target);
+            } else if(map6.hasLayer(geojson4)) {
+                geojson4.resetStyle(e.target);
+              } else if(map6.hasLayer(geojson5)) {
+                  geojson5.resetStyle(e.target);
+                } else if(map6.hasLayer(geojson6)) {
+                    geojson6.resetStyle(e.target);
+                  } else if(map6.hasLayer(geojson7)) {
+                      geojson7.resetStyle(e.target);
+                    } else if(map6.hasLayer(geojson8)) {
+                        geojson8.resetStyle(e.target);
+                      } else if(map6.hasLayer(geojson9)) {
+                          geojson9.resetStyle(e.target);
+                        } else if(map6.hasLayer(geojson10)) {
+                            geojson10.resetStyle(e.target);
+                          } else if(map6.hasLayer(geojson11)) {
+                              geojson11.resetStyle(e.target);
+                            } else if(map6.hasLayer(geojson12)) {
+                                geojson12.resetStyle(e.target);
+                              } else {
+                                  geojson13.resetStyle(e.target);
+        }
+        //info.update();
+        info.getContainer().innerHTML='Select a layer below and hover over features for more data';
+      }
+
+      function onEachFeature(feature, layer) {
+          layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight
+          });
+      }
+
+      geojson1 = L.geoJson(zcta, {
+          style: style1, onEachFeature: onEachFeature }).addTo(map6);
+      geojson2 = L.geoJson(zcta, {
+          style: style2, onEachFeature: onEachFeature })
+      geojson3 = L.geoJson(zcta, {
+          style: style3, onEachFeature: onEachFeature })
+      geojson4 = L.geoJson(zcta, {
+          style: style4, onEachFeature: onEachFeature })
+      geojson5 = L.geoJson(zcta, {
+          style: style5, onEachFeature: onEachFeature })
+      geojson6 = L.geoJson(zcta, {
+          style: style6, onEachFeature: onEachFeature })
+      geojson7 = L.geoJson(zcta, {
+          style: style7, onEachFeature: onEachFeature })
+      geojson8 = L.geoJson(zcta, {
+          style: style8, onEachFeature: onEachFeature })
+      geojson9 = L.geoJson(zcta, {
+          style: style9, onEachFeature: onEachFeature })
+      geojson10 = L.geoJson(zcta, {
+          style: style10, onEachFeature: onEachFeature })
+      geojson11 = L.geoJson(zcta, {
+          style: style11, onEachFeature: onEachFeature })
+      geojson12 = L.geoJson(zcta, {
+          style: style12, onEachFeature: onEachFeature })
+      geojson13 = L.geoJson(zcta, {
+          style: style13, onEachFeature: onEachFeature })
+
+      var legendPct = L.control({position: 'bottomleft'});
+
+      legendPct.onAdd = function (map6) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [0, .15, .3, .45, .6],
+            tgrades = [.15, .3, .45, .6, .75],
+            labels = ['<b>Percentage</b>'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorPct(from + .05) + '"></i> ' +
+              from*100 + '% - ' + to*100 + '%');
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      //Iniital legend on loading
+      legendPct.addTo(map6);
+
+      //Control to toggle layers
+      var layers = {
+        'Deterrent: Traffic Safety': geojson1,
+        'Deterrent: Distance': geojson2,
+        'Deterrent: Hills': geojson3,
+        'Deterrent: No Amenities': geojson4,
+        'Deterrent: No Information': geojson5,
+        'Deterrent: No Signage': geojson6,
+        'Deterrent: Lane/Trail Quality': geojson7,
+        'Deterrent: Weather': geojson8,
+        'Deterrent: Carrying Items': geojson9,
+        'Motivator: Amenities': geojson10,
+        'Motivator: Aesthetics': geojson11,
+        'Motivator: Bike Storage': geojson12,
+        'Motivator: Bike Lanes': geojson13,
+      };
+      L.control.layers(layers).addTo(map6);
+
+      });
+
+      </script>
+
+    </div>
+
+
+    <div id="map7" class="tab-pane fade">
+
+      <script>
+      //Workaround to make sure map loads properly in tab
+      $("body").on("shown.bs.tab", function() {
+        map7.invalidateSize(false);
+      });
+
+      var map7 = L.map('map7',{center: [31.98, -106.55], zoom: 10});
+
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap7.org/copyright">OpenStreetmap7</a>'
+        }).addTo(map7);
+
+      $.getJSON("zip.geojson",function(zcta){
+
+      var info = L.control();
+      info.onAdd = function (map7) {
+          this._div = L.DomUtil.create('div', 'info');
+          this.update();
+          return this._div;
+      };
+      info.update = function (props) {
+        var description1 = 'Walking is good for my health: ';
+        var description2 = 'Walking exposes me to air pollution <br />more than driving: ';
+        var description3 = 'Walking takes too much time: ';
+        var description4 = 'Walking means I do not have to <br />worry about parking: ';
+        var description5 = 'Whenever possible, I choose walking <br />instead of driving: ';
+        var description6 = 'Deterrent - Traffic safety: ';
+        var description7 = 'Deterrent - Hilly Terrain: ';
+        var description8 = 'Deterrent - Lack of travel time/distance <br />information: ';
+        var description9 = 'Deterrent - Inclement weather: ';
+        var description10 = 'Deterrent - Unable to carry items: ';
+        var description11 = 'Deterrent - Lack of attractive destinations: ';
+        var description12 = 'Deterrent - Lack of sidewalks: ';
+        var description13 = 'Motivator - Amenities (e.g. open <br />spaces, playgrounds): ';
+        var description14 = 'Motivator - Aesthetics (e.g trees, lighting): ';
+        var description15 = 'Motivator - Businesses with a <br />walkable environment: ';
+
+        if (map7.hasLayer(geojson1)) {
+          var infotext = description1.concat(Number(props.WALKINGHEA).toFixed(1));
+        } else if(map7.hasLayer(geojson2)) {
+            var infotext = description2.concat(Number(props.WALKEXPOSE).toFixed(1));
+        } else if(map7.hasLayer(geojson3)) {
+            var infotext = description3.concat(Number(props.WALKTAKEST).toFixed(1));
+        } else if(map7.hasLayer(geojson4)) {
+            var infotext = description4.concat(Number(props.NOPARKINGW).toFixed(1));
+        } else if(map7.hasLayer(geojson5)) {
+            var infotext = description5.concat(Number(props.WALKNOTDRI).toFixed(1));
+        } else if(map7.hasLayer(geojson6)) {
+            var infotext = description6.concat(Number(props.walkdeter1*100).toFixed(1));
+        } else if(map7.hasLayer(geojson7)) {
+            var infotext = description7.concat(Number(props.walkdeter2*100).toFixed(1));
+        } else if(map7.hasLayer(geojson8)) {
+            var infotext = description8.concat(Number(props.walkdeter3*100).toFixed(1));
+        } else if(map7.hasLayer(geojson9)) {
+            var infotext = description9.concat(Number(props.walkdeter4*100).toFixed(1));
+        } else if(map7.hasLayer(geojson10)) {
+            var infotext = description10.concat(Number(props.walkdeter5*100).toFixed(1));
+        } else if(map7.hasLayer(geojson11)) {
+            var infotext = description11.concat(Number(props.walkdeter6*100).toFixed(1));
+        } else if(map7.hasLayer(geojson12)) {
+            var infotext = description12.concat(Number(props.walkdeter7*100).toFixed(1));
+        } else if(map7.hasLayer(geojson13)) {
+            var infotext = description13.concat(Number(props.walkmoti_4*100).toFixed(1));
+        } else if(map7.hasLayer(geojson14)) {
+            var infotext = description14.concat(Number(props.walkmoti_5*100).toFixed(1));
+        } else if(map7.hasLayer(geojson15)) {
+            var infotext = description15.concat(Number(props.walkmoti_6*100).toFixed(1));
+        }
+
+        //Change pop-up text depnding on layer
+        if (map7.hasLayer(geojson1) || map7.hasLayer(geojson2) || map7.hasLayer(geojson3) ||
+        map7.hasLayer(geojson4) || map7.hasLayer(geojson5)) {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext + '<font size = "2"><i><br /> (1=Strongly Disagree, 5=Strongly Agree)</i></font>'
+              : 'Select a layer below and hover over features for more data');
+        } else {
+            this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+            infotext + '%'
+              : 'Select a layer below and hover over features for more data');
+        }
+      };
+      info.addTo(map7);
+
+        function getColorPct(d) {
+          return d > .6 ? '#00412d' :
+                 d > .45 ? '#22733a' :
+                 d > .3 ? '#55a56e' :
+                 d > .15 ? '#a1d7a2' :
+                 d >= 0 ? '#d5eeb9' :
+                          '#dedede';
+        }
+        function getColorLikert(d) {
+          return d > 4 ? '#004122' :
+                 d > 3 ? '#31a354' :
+                 d > 2 ? '#a1d7a2' :
+                 d >= 1 ? '#d5eeb9' :
+                          '#dedede';
+        }
+
+        function style1(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.WALKINGHEA),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style2(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.WALKEXPOSE),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style3(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.WALKTAKEST),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style4(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.NOPARKINGW),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style5(feature) {
+          return {
+              fillColor: getColorLikert(feature.properties.WALKNOTDRI),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style6(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkdeter1),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style7(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkdeter2),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style8(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkdeter3),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style9(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkdeter4),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style10(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkdeter5),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style11(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkdeter6),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style12(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkdeter7),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style13(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkmoti_4),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style14(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkmoti_5),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style15(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkmoti_6),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+
+      var geojson1;
+      var geojson2;
+      var geojson3;
+      var geojson4;
+      var geojson5;
+      var geojson6;
+      var geojson7;
+      var geojson8;
+      var geojson9;
+      var geojson10;
+      var geojson11;
+      var geojson12;
+      var geojson13;
+      var geojson14;
+      var geojson15;
+
+      //Highlight feature on mouseover
+      function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 2, color: '#666', dashArray: '', fillOpacity: 0.7
+        });
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+        info.update(layer.feature.properties);
+      }
+
+      //Remove highlight and return to default state when mouse leaves
+      function resetHighlight(e) {
+        if (map7.hasLayer(geojson1)) {
+          geojson1.resetStyle(e.target);
+        } else if(map7.hasLayer(geojson2)) {
+            geojson2.resetStyle(e.target);
+          } else if(map7.hasLayer(geojson3)) {
+              geojson3.resetStyle(e.target);
+            } else if(map7.hasLayer(geojson4)) {
+                geojson4.resetStyle(e.target);
+              } else if(map7.hasLayer(geojson5)) {
+                  geojson5.resetStyle(e.target);
+                } else if(map7.hasLayer(geojson6)) {
+                    geojson6.resetStyle(e.target);
+                  } else if(map7.hasLayer(geojson7)) {
+                      geojson7.resetStyle(e.target);
+                    } else if(map7.hasLayer(geojson8)) {
+                        geojson8.resetStyle(e.target);
+                      } else if(map7.hasLayer(geojson9)) {
+                          geojson9.resetStyle(e.target);
+                        } else if(map7.hasLayer(geojson10)) {
+                            geojson10.resetStyle(e.target);
+                          } else if(map7.hasLayer(geojson11)) {
+                              geojson11.resetStyle(e.target);
+                            } else if(map7.hasLayer(geojson12)) {
+                                geojson12.resetStyle(e.target);
+                              } else if(map7.hasLayer(geojson13)) {
+                                  geojson13.resetStyle(e.target);
+                                } else if(map7.hasLayer(geojson14)) {
+                                    geojson14.resetStyle(e.target);
+                                  } else {
+                                      geojson15.resetStyle(e.target);
+        }
+        //info.update();
+        info.getContainer().innerHTML='Select a layer below and hover over features for more data';
+      }
+
+      function onEachFeature(feature, layer) {
+          layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight
+          });
+      }
+
+      geojson1 = L.geoJson(zcta, {
+          style: style1, onEachFeature: onEachFeature }).addTo(map7);
+      geojson2 = L.geoJson(zcta, {
+          style: style2, onEachFeature: onEachFeature })
+      geojson3 = L.geoJson(zcta, {
+          style: style3, onEachFeature: onEachFeature })
+      geojson4 = L.geoJson(zcta, {
+          style: style4, onEachFeature: onEachFeature })
+      geojson5 = L.geoJson(zcta, {
+          style: style5, onEachFeature: onEachFeature })
+      geojson6 = L.geoJson(zcta, {
+          style: style6, onEachFeature: onEachFeature })
+      geojson7 = L.geoJson(zcta, {
+          style: style7, onEachFeature: onEachFeature })
+      geojson8 = L.geoJson(zcta, {
+          style: style8, onEachFeature: onEachFeature })
+      geojson9 = L.geoJson(zcta, {
+          style: style9, onEachFeature: onEachFeature })
+      geojson10 = L.geoJson(zcta, {
+          style: style10, onEachFeature: onEachFeature })
+      geojson11 = L.geoJson(zcta, {
+          style: style11, onEachFeature: onEachFeature })
+      geojson12 = L.geoJson(zcta, {
+          style: style12, onEachFeature: onEachFeature })
+      geojson13 = L.geoJson(zcta, {
+          style: style13, onEachFeature: onEachFeature })
+      geojson14 = L.geoJson(zcta, {
+          style: style14, onEachFeature: onEachFeature })
+      geojson15 = L.geoJson(zcta, {
+          style: style15, onEachFeature: onEachFeature })
+
+      var legendPct = L.control({position: 'bottomleft'});
+      var legendLikert = L.control({position: 'bottomleft'});
+
+      legendPct.onAdd = function (map7) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [0, .15, .3, .45, .6],
+            tgrades = [.15, .3, .45, .6, .75],
+            labels = ['<b>Percentage</b>'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorPct(from + .05) + '"></i> ' +
+              from*100 + '% - ' + to*100 + '%');
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      legendLikert.onAdd = function (map7) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [1, 2, 3, 4],
+            tgrades = [2, 3, 4, 5],
+            labels = ['<b>Average Response</b><br />(1=Strongly Disagree, 5=Strongly Agree)'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorLikert(from + 0.5) + '"></i> ' +
+              from + ' - ' + to);
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      //Iniital legend on loading
+      legendLikert.addTo(map7);
+      currentLegend = legendLikert;
+
+      map7.on('baselayerchange', function (eventLayer) {
+        if (eventLayer.name === 'Health' || eventLayer.name === 'Air Pollution' || eventLayer.name === 'Time' ||
+        eventLayer.name === 'Parking' || eventLayer.name === 'Walking vs. Driving') {
+          map7.removeControl(currentLegend);
+          currentLegend = legendLikert;
+          legendLikert.addTo(map7);
+        } else {
+          map7.removeControl(currentLegend);
+          currentLegend = legendPct;
+          legendPct.addTo(map7);
+        }
+      });
+
+      var description1 = 'Walking is good for my health: ';
+      var description2 = 'Walking exposes me to air pollution <br />more than driving: ';
+      var description3 = 'Walking takes too much time: ';
+      var description4 = 'Walking means I do not have to <br />worry about parking: ';
+      var description5 = 'Whenever possible, I choose walking <br />instead of driving: ';
+      var description6 = 'Deterrent - Traffic safety: ';
+      var description7 = 'Deterrent - Hilly Terrain: ';
+      var description8 = 'Deterrent - Lack of travel time/distance <br />information: ';
+      var description9 = 'Deterrent - Inclement weather: ';
+      var description10 = 'Deterrent - Unable to carry items: ';
+      var description11 = 'Deterrent - Lack of attractive destinations: ';
+      var description12 = 'Deterrent - Lack of sidewalks: ';
+      var description13 = 'Motivator - Amenities (e.g. open <br />spaces, playgrounds): ';
+      var description14 = 'Motivator - Aesthetics (e.g trees, lighting): ';
+      var description15 = 'Motivator - Businesses with a <br />walkable environment: ';
+
+      //Control to toggle layers
+      var layers = {
+        'Health': geojson1,
+        'Air Pollution': geojson2,
+        'Time': geojson3,
+        'Parking': geojson4,
+        'Walking vs. Driving': geojson5,
+        'Deterrent: Traffic': geojson6,
+        'Deterrent: Hills': geojson7,
+        'Deterrent: No Information': geojson8,
+        'Deterrent: Weather': geojson9,
+        'Deterrent: Carrying Items': geojson10,
+        'Deterrent: No Destinations': geojson11,
+        'Deterrent: No Sidewalks': geojson12,
+        'Motivator: Amenities': geojson13,
+        'Motivator: Aesthetics': geojson14,
+        'Motivator: Businesses': geojson15,
+      };
+      L.control.layers(layers).addTo(map7);
+
+      });
+
+      </script>
+
+    </div>
+
+
+    <div id="map8" class="tab-pane fade">
+
+      <script>
+      //Workaround to make sure map loads properly in tab
+      $("body").on("shown.bs.tab", function() {
+        map8.invalidateSize(false);
+      });
+
+      var map8 = L.map('map8',{center: [31.98, -106.55], zoom: 10});
+
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap8.org/copyright">OpenStreetmap8</a>'
+        }).addTo(map8);
+
+      $.getJSON("zip.geojson",function(zcta){
+
+      var info = L.control();
+      info.onAdd = function (map8) {
+          this._div = L.DomUtil.create('div', 'info');
+          this.update();
+          return this._div;
+      };
+      info.update = function (props) {
+        var description1 = 'There are no routes available to my <br />destinations: ';
+        var description2 = 'Arrival/departure times are not <br />reliable: ';
+        var description3 = 'Arrival/departure times do not fit <br />my schedule: ';
+        var description4 = 'It takes longer than driving: ';
+        var description5 = 'The fares are too expensive: ';
+        var description7 = 'Parking at the terminal is too <br />expensive: ';
+        var description6 = 'There is lack of parking near bus <br />terminals in the city: ';
+        var description8 = 'It is not comfortable: ';
+        var description9 = 'It is not safe: ';
+        var description10 = 'It is not clean: ';
+        var description11 = 'It is not disability-friendly: ';
+
+        if (map8.hasLayer(geojson1)) {
+          var infotext = description1.concat((props.NOROUTES_m).toFixed(1));
+        } else if(map8.hasLayer(geojson2)) {
+            var infotext = description2.concat((props.TIMESNOTRE).toFixed(1));
+          } else if(map8.hasLayer(geojson3)) {
+              var infotext = description3.concat((props.TIMESINCON).toFixed(1));
+            } else if(map8.hasLayer(geojson4)) {
+                var infotext = description4.concat((props.TRANSITTAK).toFixed(1));
+              } else if(map8.hasLayer(geojson5)) {
+                  var infotext = description5.concat((props.FARESEXPEN).toFixed(1));
+                } else if(map8.hasLayer(geojson6)) {
+                    var infotext = description6.concat((props.TERMPARKIN).toFixed(1));
+                  } else if(map8.hasLayer(geojson7)) {
+                      var infotext = description7.concat((props.TERMPARK_1).toFixed(1));
+                    } else if(map8.hasLayer(geojson8)) {
+                        var infotext = description8.concat((props.UNCOFORTAB).toFixed(1));
+                      } else if(map8.hasLayer(geojson9)) {
+                          var infotext = description9.concat((props.UNSAFE_mea).toFixed(1));
+                        } else if(map8.hasLayer(geojson10)) {
+                            var infotext = description10.concat((props.UNCLEAN_me).toFixed(1));
+                          } else if(map8.hasLayer(geojson11)) {
+                              var infotext = description11.concat((props.DISABILITY).toFixed(1));
+        }
+
+        this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+        infotext +
+        '<font size = "2"><i><br /> (1=Strongly Disagree, 5=Strongly Agree)</i></font>'
+          : 'Select a layer below and hover over features for more data');
+
+      };
+      info.addTo(map8);
+
+      function getColor(d) {
+          return d > 4   ? '#004122' :
+                 d > 3 ? '#31a354' :
+                 d > 2   ? '#a1d7a2' :
+                 d > 1 ? '#d5eeb9' :
+                           '#dedede';
+        }
+
+        function style1(feature) {
+          return {
+              fillColor: getColor(feature.properties.NOROUTES_m),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style2(feature) {
+          return {
+              fillColor: getColor(feature.properties.TIMESNOTRE),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style3(feature) {
+          return {
+              fillColor: getColor(feature.properties.TIMESINCON),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style4(feature) {
+          return {
+              fillColor: getColor(feature.properties.TRANSITTAK),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style5(feature) {
+          return {
+              fillColor: getColor(feature.properties.FARESEXPEN),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style6(feature) {
+          return {
+              fillColor: getColor(feature.properties.TERMPARKIN),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style7(feature) {
+          return {
+              fillColor: getColor(feature.properties.TERMPARK_1),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style8(feature) {
+          return {
+              fillColor: getColor(feature.properties.UNCOFORTAB),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style9(feature) {
+          return {
+              fillColor: getColor(feature.properties.UNSAFE_mea),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style10(feature) {
+          return {
+              fillColor: getColor(feature.properties.UNCLEAN_me),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style11(feature) {
+          return {
+              fillColor: getColor(feature.properties.DISABILITY),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+
+      var geojson1;
+      var geojson2;
+      var geojson3;
+      var geojson4;
+      var geojson5;
+      var geojson6;
+      var geojson7;
+      var geojson8;
+      var geojson9;
+      var geojson10;
+      var geojson11;
+
+      //Highlight feature on mouseover
+      function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 2, color: '#666', dashArray: '', fillOpacity: 0.7
+        });
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+        info.update(layer.feature.properties);
+      }
+
+      //Remove highlight and return to default state when mouse leaves
+      function resetHighlight(e) {
+        if (map8.hasLayer(geojson1)) {
+          geojson1.resetStyle(e.target);
+        } else if(map8.hasLayer(geojson2)) {
+            geojson2.resetStyle(e.target);
+          } else if(map8.hasLayer(geojson3)) {
+              geojson3.resetStyle(e.target);
+            } else if(map8.hasLayer(geojson4)) {
+                geojson4.resetStyle(e.target);
+              } else if(map8.hasLayer(geojson5)) {
+                  geojson5.resetStyle(e.target);
+                } else if(map8.hasLayer(geojson6)) {
+                    geojson6.resetStyle(e.target);
+                  } else if(map8.hasLayer(geojson7)) {
+                      geojson7.resetStyle(e.target);
+                    } else if(map8.hasLayer(geojson8)) {
+                        geojson8.resetStyle(e.target);
+                      } else if(map8.hasLayer(geojson9)) {
+                          geojson9.resetStyle(e.target);
+                        } else if(map8.hasLayer(geojson10)) {
+                            geojson10.resetStyle(e.target);
+                          } else {
+                              geojson11.resetStyle(e.target);
+        }
+        info.getContainer().innerHTML='Select a layer below and hover over features for more data';
+      }
+
+      function onEachFeature(feature, layer) {
+          layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight
+          });
+      }
+
+      geojson1 = L.geoJson(zcta, {
+          style: style1, onEachFeature: onEachFeature }).addTo(map8);
+      geojson2 = L.geoJson(zcta, {
+          style: style2, onEachFeature: onEachFeature })
+      geojson3 = L.geoJson(zcta, {
+          style: style3, onEachFeature: onEachFeature })
+      geojson4 = L.geoJson(zcta, {
+          style: style4, onEachFeature: onEachFeature })
+      geojson5 = L.geoJson(zcta, {
+          style: style5, onEachFeature: onEachFeature })
+      geojson6 = L.geoJson(zcta, {
+          style: style6, onEachFeature: onEachFeature })
+      geojson7 = L.geoJson(zcta, {
+          style: style7, onEachFeature: onEachFeature })
+      geojson8 = L.geoJson(zcta, {
+          style: style8, onEachFeature: onEachFeature })
+      geojson9 = L.geoJson(zcta, {
+          style: style9, onEachFeature: onEachFeature })
+      geojson10 = L.geoJson(zcta, {
+          style: style10, onEachFeature: onEachFeature })
+      geojson11 = L.geoJson(zcta, {
+          style: style11, onEachFeature: onEachFeature })
+
+      //Legend
+      var legend = L.control({position: 'bottomleft'});
+      legend.onAdd = function (map8) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [1, 2, 3, 4],
+            labels = ['<b>Average Response</b><br /><font size="2">(1: Strongly Disagree, 5: Strongly Agree)</font>'],
+            from, to;
+
+        for (var i = 0; i < grades.length; i++) {
+            from = grades[i];
+            to = grades[i+1];
+
+            labels.push(
+              '<i style="background:' + getColor(from + 1) + '"></i> ' +
+              from + (to ? ' - ' + to : ' - 5'));
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+      legend.addTo(map8);
+
+      //Control to toggle layers
+      var layers = {
+          'Routes': geojson1,
+          'Reliability': geojson2,
+          'Frequency': geojson3,
+          'Travel Time': geojson4,
+          'Cost': geojson5,
+          'Parking Cost': geojson6,
+          'Parking': geojson7,
+          'Comfort': geojson8,
+          'Safety': geojson9,
+          'Cleanliness': geojson10,
+          'Disability-Friendly': geojson11
+      };
+      L.control.layers(layers).addTo(map8);
+
+      });
+
+      </script>
+
+    </div>
+
+
+    <div id="map9" class="tab-pane fade">
+
+      <script>
+      //Workaround to make sure map loads properly in tab
+      $("body").on("shown.bs.tab", function() {
+        map9.invalidateSize(false);
+      });
+
+      var map9 = L.map('map9',{center: [31.98, -106.55], zoom: 10});
+
+      L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap9.org/copyright">OpenStreetmap9</a>'
+        }).addTo(map9);
+
+      $.getJSON("zip.geojson",function(zcta){
+
+      var info = L.control();
+      info.onAdd = function (map9) {
+          this._div = L.DomUtil.create('div', 'info');
+          this.update();
+          return this._div;
+      };
+      info.update = function (props) {
+        var description1 = 'Commute by bike at least once a week: ';
+        var description2 = 'Commute by walking at least once a week: ';
+        var description3 = 'Commute by transit at least once a week: ';
+        var description4 = 'Commute by single-occupant vehicle (SOV) <br />at least once a week: ';
+        var description5 = 'Commute by carpool at least once a week: ';
+        var description6 = 'Frequently drive alone for non-work trips: ';
+        var description7 = 'Frequently motorcycle for non-work trips: ';
+        var description8 = 'Frequently carpool for non-work trips: ';
+        var description9 = 'Frequently use transit for non-work trips: ';
+        var description10 = 'Frequently use park & ride for non-work trips: ';
+        var description11 = 'Frequently bike for non-work trips: ';
+        var description12 = 'Frequently walk for non-work trips: ';
+        var description13 = 'Frequently use taxi for non-work trips: ';
+        var description14 = 'Frequently use other mode for non-work trips: ';
+
+        if (map9.hasLayer(geojson1)) {
+          var infotext = description1.concat(Number(props.bicycleCom*100).toFixed(1));
+        } else if(map9.hasLayer(geojson2)) {
+            var infotext = description2.concat(Number(props.walkCommut*100).toFixed(1));
+        } else if(map9.hasLayer(geojson3)) {
+            var infotext = description3.concat(Number(props.transitCom*100).toFixed(1));
+        } else if(map9.hasLayer(geojson4)) {
+            var infotext = description4.concat(Number(props.sovCommute*100).toFixed(1));
+        } else if(map9.hasLayer(geojson5)) {
+            var infotext = description5.concat(Number(props.carpoolCom*100).toFixed(1));
+        } else if(map9.hasLayer(geojson6)) {
+            var infotext = description6.concat(Number(props.nonworkm_4*100).toFixed(1));
+        } else if(map9.hasLayer(geojson7)) {
+            var infotext = description7.concat(Number(props.nonworkm_5*100).toFixed(1));
+        } else if(map9.hasLayer(geojson8)) {
+            var infotext = description8.concat(Number(props.nonworkm_6*100).toFixed(1));
+        } else if(map9.hasLayer(geojson9)) {
+            var infotext = description9.concat(Number(props.nonworkm_7*100).toFixed(1));
+        } else if(map9.hasLayer(geojson10)) {
+            var infotext = description10.concat(Number(props.nonworkm_8*100).toFixed(1));
+        } else if(map9.hasLayer(geojson11)) {
+            var infotext = description11.concat(Number(props.nonworkm_9*100).toFixed(1));
+        } else if(map9.hasLayer(geojson12)) {
+            var infotext = description12.concat(Number(props.nonwork_10*100).toFixed(1));
+        } else if(map9.hasLayer(geojson13)) {
+            var infotext = description13.concat(Number(props.nonwork_11*100).toFixed(1));
+        } else if(map9.hasLayer(geojson14)) {
+            var infotext = description14.concat(Number(props.nonwork_12*100).toFixed(1));
+        }
+
+        this._div.innerHTML = (props ? '<h4>ZIP Code: ' + props.ZIP + '</h4>' +
+        infotext + '%'
+          : 'Select a layer below and hover over features for more data');
+      };
+      info.addTo(map9);
+
+        function getColorPct(d) {
+          return d > .3   ? '#004122' :
+                 d > .2 ? '#31a354' :
+                 d > .1   ? '#a1d7a2' :
+                 d > 0 ? '#d5eeb9' :
+                           '#dedede';
+        }
+        function getColorSOV(d) {
+          return d > .9   ? '#004122' :
+                 d > .8 ? '#31a354' :
+                 d > .7   ? '#a1d7a2' :
+                 d > .6 ? '#d5eeb9' :
+                           '#dedede';
+        }
+
+        function style1(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.bicycleCom),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style2(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.walkCommut),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style3(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.transitCom),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style4(feature) {
+          return {
+              fillColor: getColorSOV(feature.properties.sovCommute),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style5(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.carpoolCom),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style6(feature) {
+          return {
+              fillColor: getColorSOV(feature.properties.nonworkm_4),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style7(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.nonworkm_5),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style8(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.nonworkm_6),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style9(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.nonworkm_7),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style10(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.nonworkm_8),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style11(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.nonworkm_9),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style12(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.nonwork_10),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style13(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.nonwork_11),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+        function style14(feature) {
+          return {
+              fillColor: getColorPct(feature.properties.nonwork_12),
+              weight: 2, opacity: 1, color: 'white', fillOpacity: 0.6 };
+        }
+
+      var geojson1;
+      var geojson2;
+      var geojson3;
+      var geojson4;
+      var geojson5;
+      var geojson6;
+      var geojson7;
+      var geojson8;
+      var geojson9;
+      var geojson10;
+      var geojson11;
+      var geojson12;
+      var geojson13;
+      var geojson14;
+
+      //Highlight feature on mouseover
+      function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 2, color: '#666', dashArray: '', fillOpacity: 0.7
+        });
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+        info.update(layer.feature.properties);
+      }
+
+      //Remove highlight and return to default state when mouse leaves
+      function resetHighlight(e) {
+        if (map9.hasLayer(geojson1)) {
+          geojson1.resetStyle(e.target);
+        } else if(map9.hasLayer(geojson2)) {
+            geojson2.resetStyle(e.target);
+          } else if(map9.hasLayer(geojson3)) {
+              geojson3.resetStyle(e.target);
+            } else if(map9.hasLayer(geojson4)) {
+                geojson4.resetStyle(e.target);
+              } else if(map9.hasLayer(geojson5)) {
+                  geojson5.resetStyle(e.target);
+                } else if(map9.hasLayer(geojson6)) {
+                    geojson6.resetStyle(e.target);
+                  } else if(map9.hasLayer(geojson7)) {
+                      geojson7.resetStyle(e.target);
+                    } else if(map9.hasLayer(geojson8)) {
+                        geojson8.resetStyle(e.target);
+                      } else if(map9.hasLayer(geojson9)) {
+                          geojson9.resetStyle(e.target);
+                        } else if(map9.hasLayer(geojson10)) {
+                            geojson10.resetStyle(e.target);
+                          } else if(map9.hasLayer(geojson11)) {
+                              geojson11.resetStyle(e.target);
+                            } else if(map9.hasLayer(geojson12)) {
+                                geojson12.resetStyle(e.target);
+                              } else if(map9.hasLayer(geojson13)) {
+                                  geojson13.resetStyle(e.target);
+                                } else {
+                                    geojson14.resetStyle(e.target);
+        }
+        //info.update();
+        info.getContainer().innerHTML='Select a layer below and hover over features for more data';
+      }
+
+      function onEachFeature(feature, layer) {
+          layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight
+          });
+      }
+
+      geojson1 = L.geoJson(zcta, {
+          style: style1, onEachFeature: onEachFeature }).addTo(map9);
+      geojson2 = L.geoJson(zcta, {
+          style: style2, onEachFeature: onEachFeature })
+      geojson3 = L.geoJson(zcta, {
+          style: style3, onEachFeature: onEachFeature })
+      geojson4 = L.geoJson(zcta, {
+          style: style4, onEachFeature: onEachFeature })
+      geojson5 = L.geoJson(zcta, {
+          style: style5, onEachFeature: onEachFeature })
+      geojson6 = L.geoJson(zcta, {
+          style: style6, onEachFeature: onEachFeature })
+      geojson7 = L.geoJson(zcta, {
+          style: style7, onEachFeature: onEachFeature })
+      geojson8 = L.geoJson(zcta, {
+          style: style8, onEachFeature: onEachFeature })
+      geojson9 = L.geoJson(zcta, {
+          style: style9, onEachFeature: onEachFeature })
+      geojson10 = L.geoJson(zcta, {
+          style: style10, onEachFeature: onEachFeature })
+      geojson11 = L.geoJson(zcta, {
+          style: style11, onEachFeature: onEachFeature })
+      geojson12 = L.geoJson(zcta, {
+          style: style12, onEachFeature: onEachFeature })
+      geojson13 = L.geoJson(zcta, {
+          style: style13, onEachFeature: onEachFeature })
+      geojson14 = L.geoJson(zcta, {
+          style: style14, onEachFeature: onEachFeature })
+
+      var legendPct = L.control({position: 'bottomleft'});
+      var legendSOV = L.control({position: 'bottomleft'});
+
+      legendPct.onAdd = function (map9) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [0, .1, .2, .3],
+            tgrades = [.1, .2, .3, .4],
+            labels = ['<b>Percentage</b>'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorPct(from + .05) + '"></i> ' +
+              from*100 + '% - ' + to*100 + '%');
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      legendSOV.onAdd = function (map9) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            fgrades = [.6, .7, .8, .9],
+            tgrades = [.7, .8, .9, 1],
+            labels = ['<b>Percentage</b>'],
+            from, to;
+        for (var i = 0; i < fgrades.length; i++) {
+            from = fgrades[i];
+            to = tgrades[i];
+            labels.push(
+              '<i style="background:' + getColorSOV(from + 0.05) + '"></i> ' +
+              from*100 + '% - ' + to*100 + '%');
+        }
+        div.innerHTML = labels.join('<br>');
+        return div;
+      };
+
+      //Iniital legend on loading
+      legendPct.addTo(map9);
+      currentLegend = legendPct;
+
+      map9.on('baselayerchange', function (eventLayer) {
+        if (eventLayer.name === 'Commute: SOV' || eventLayer.name === 'Non-Work Mode: SOV') {
+          map9.removeControl(currentLegend);
+          currentLegend = legendSOV;
+          legendSOV.addTo(map9);
+        } else {
+          map9.removeControl(currentLegend);
+          currentLegend = legendPct;
+          legendPct.addTo(map9);
+        }
+      });
+
+      //Control to toggle layers
+      var layers = {
+        'Commute: Bike': geojson1,
+        'Commute: Walk': geojson2,
+        'Commute: Transit': geojson3,
+        'Commute: SOV': geojson4,
+        'Commute: Carpool': geojson5,
+        'Non-Work Mode: SOV': geojson6,
+        'Non-Work Mode: Motorcycle': geojson7,
+        'Non-Work Mode: Carpool': geojson8,
+        'Non-Work Mode: Transit': geojson9,
+        'Non-Work Mode: Park & Ride': geojson10,
+        'Non-Work Mode: Bike': geojson11,
+        'Non-Work Mode: Walk': geojson12,
+        'Non-Work Mode: Taxi': geojson13,
+        'Non-Work Mode: Other': geojson14,
+      };
+      L.control.layers(layers).addTo(map9);
+
+      });
+
+      </script>
+
+
+    </div>
+
+
+  </div>
+</div>
+<br>
+
+<footer>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="widget">
+        <h5 class="widgetheading">Get in touch with us</h5>
+          <address>
+           El Paso MPO<br>
+           211 N Florence St<br>
+           El Paso, TX 79901<br>
+           915-212-7107</address>
+          <span>&copy; 2016</span>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="widget">
+        <h5 class="widgetheading"></h5>
+        <address>
+         Ipek Sener, PhD<br>
+         Assistant Research Scientist<br>
+         Texas A&M Transportation Institute<br>
+         505 E Huntland Dr, Suite 455<br>
+         Austin, TX 78752<br>
+         Tel 512.407.1119 | Fax 512.467.8971<br>
+         i-sener@tti.tamu.edu</address>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="widget">
+        <h5 class="widgetheading"></h5>
+        <ul class="link-list">
+          <li><a href="#"></a></li>
+          <li><a href="#"></a></li>
+          <li><a href="#"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="widget">
+        <h5 class="widgetheading">Pages</h5>
+        <ul class="link-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="maps.html">Maps</a></li>
+          <li><a href="plots.html">Plots</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</footer>
+
+</body>
+</html>
